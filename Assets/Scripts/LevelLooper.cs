@@ -45,13 +45,13 @@ public class LevelLooper : MonoBehaviour
 						newTile = Instantiate(tilePrefab) as GameObject;
 						tileScript = newTile.GetComponent<BreakableTile>();
 						newTile.transform.position = new Vector3(x,y) + offset;
-						newTile.renderer.enabled = false;
+						newTile.renderer.material.color = Color.red;
 						break;
 					case BreakableTile.TileType.Coin:
 						newTile = Instantiate(tilePrefab) as GameObject;
 						tileScript = newTile.GetComponent<BreakableTile>();
 						newTile.transform.position = new Vector3(x,y) + offset;
-						newTile.renderer.material.color = Color.red;
+						newTile.renderer.material.color = Color.yellow;
 					break;
 				}
 			}

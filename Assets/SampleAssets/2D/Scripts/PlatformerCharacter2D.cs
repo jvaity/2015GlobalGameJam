@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace UnitySampleAssets._2D
 {
@@ -17,6 +18,8 @@ namespace UnitySampleAssets._2D
         [SerializeField] private LayerMask whatIsGround; // A mask determining what is ground to the character
 
         private Transform groundCheck; // A position marking where to check if the player is grounded.
+        private List<GameObject> groundCheckList;
+
         private float groundedRadius = .2f; // Radius of the overlap circle to determine if grounded
         private bool grounded = false; // Whether or not the player is grounded.
         private Transform ceilingCheck; // A position marking where to check for ceilings
@@ -27,17 +30,29 @@ namespace UnitySampleAssets._2D
         private void Awake()
         {
             // Setting up references.
-            groundCheck = GameObject.Find("GroundCheck").transform;
+            //groundCheck = GameObject.Find("GroundCheck").transform;
             ceilingCheck = transform.Find("CeilingCheck");
             //anim = GetComponent<Animator>();
+
+            groundCheckList = new List<GameObject>();
+            groundCheckList.AddRange(GameObject.FindGameObjectsWithTag("Block"));
         }
 
 
         private void FixedUpdate()
         {
             // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            grounded = Physics2D.OverlapCircle(groundCheck.position, groundedRadius, whatIsGround);
+            //grounded = Physics2D.OverlapCircle(groundCheck.position, groundedRadius, whatIsGround);
             //anim.SetBool("Ground", grounded);
+
+            grounded = false;
+            foreach (GameObject g in groundCheckList)
+            {
+                grounded = Physics2D.OverlapCircle(g.transform.position, groundedRadius, whatIsGround);
+
+                if (grounded)
+                    break;
+            }
 
             // Set the vertical animation
             //anim.SetFloat("vSpeed", rigidbody2D.velocity.y);

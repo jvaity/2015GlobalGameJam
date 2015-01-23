@@ -25,6 +25,7 @@ public class BreakableTile : MonoBehaviour
 	private void ChangeTileType(TileType newType)
 	{
 		type = newType;
+		this.gameObject.tag = type.ToString();
 	}
 
 	private void OnTriggerEnter2d(Collider2D collider)
