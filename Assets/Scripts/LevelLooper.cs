@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class LevelLooper : MonoBehaviour 
 {
 	private GameObject tilePrefab;
-	private TileType[,] tileStates = new TileType[30,10];
+    private BreakableTile.TileType[,] tileStates = new BreakableTile.TileType[30, 10];
 
 	private Stack<GameObject> tilePool;
 	private int columnCounter;
