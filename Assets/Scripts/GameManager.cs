@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public SceneState sceneState;
     public int numCollectablesLeft = 0;
 
+    private int collectablesCollected = 0;
+
     void Awake()
     {
         if (instance == null)
@@ -52,6 +54,12 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1.0f;
                 break;
         }
+    }
+
+    public void collect()
+    {
+        collectablesCollected++;
+        Debug.Log("collectibles: "+collectablesCollected);
     }
 
     private void EndLevel()
