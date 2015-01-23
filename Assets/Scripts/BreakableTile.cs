@@ -31,7 +31,22 @@ public class BreakableTile : MonoBehaviour
 	{
 		if (collider.CompareTag ("Player")) 
 		{
-			this.gameObject.SetActive(false);
+			switch (type) 
+			{
+				case TileType.Empty:
+					//Shouldn't be colliding
+					break;
+				case TileType.Block:
+					//Kill block
+					ChangeTileType (TileType.Empty);
+					break;
+				case TileType.Death:
+					//Die
+					break;
+				case TileType.Coin:
+					//GetCoin()
+					break;
+			}
 		}
 
 	}
