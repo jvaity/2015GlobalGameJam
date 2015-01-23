@@ -27,27 +27,45 @@ public class BreakableTile : MonoBehaviour
 		type = newType;
 	}
 
-	private void OnTrigger2DExit(Collider2D collider)
+	private void OnTriggerEnter2d(Collider2D collider)
 	{
 		if (collider.CompareTag ("Player")) 
 		{
 			switch (type) 
 			{
 				case TileType.Empty:
-					//Shouldn't be colliding
 					break;
 				case TileType.Block:
-					//Kill block
-					ChangeTileType (TileType.Empty);
 					break;
 				case TileType.Death:
-					//Die
 					break;
 				case TileType.Coin:
-					//GetCoin()
+                    GameManager.Instance.collect();
 					break;
 			}
 		}
 
 	}
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (collider.CompareTag ("Player"))
+        {
+            switch (type)
+            {
+                case TileType.Empty:
+                    //Shouldn't be colliding
+                    break;
+                case TileType.Block:
+                    //Kill block
+                    ChangeTileType(TileType.Empty);
+                    break;
+                case TileType.Death:
+                    //Die
+                    break;
+                case TileType.Coin:
+                    break;
+            }
+        }
+    }
 }
