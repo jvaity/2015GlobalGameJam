@@ -3,27 +3,35 @@ using System.Collections;
 
 public class LevelCreator : MonoBehaviour {
 
-	private GameObject CreateLevel(Texture2D image)
+    [SerializeField]
+    private GameObject tilePrefab;
+
+	private object[][] CreateLevel(Texture2D image)
     {
-        Transform parent = new GameObject("Level").transform;
+
+        object[][] tiles = new object[image.height][];
         for (int y = 0; y < image.height; y++)
         {
+            tiles[y] = new object[image.width];
             for (int x = 0; x < image.width; x++)
             {
                 Color pixel = image.GetPixel(x, y);
-                if (pixel == Color.white)
-                    continue;
-                else if (pixel.r == 1)
+                if (pixel.r == 1)
                 {
-                    GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                    tiles[y][x] = new object();
                 }
                 else if (pixel.g == 1)
                 {
-                    GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    tile.renderer.enabled = false;
+                    tiles[y][x] = new object();
                 }
+                else if (pixel.b == 1)
+                {
+                    tiles[y][x] = new object();
+                }
+                else
+                    tiles[y][x] = new object();
             }
         }
-        return parent.gameObject;
+        return tiles;
     }
 }
