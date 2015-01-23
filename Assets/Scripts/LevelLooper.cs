@@ -60,21 +60,60 @@ public class LevelLooper : MonoBehaviour
 
 	public void GenerateNextColumn()
 	{
+		BreakableTile.TileType[] newColumnTypes = new BreakableTile.TileType[levelMap.height];
+		int x = columnCounter % levelMap.width;
+		for (int y = 0; y < levelMap.height; y++) 
+		{
+			newColumnTypes[y] = tileStates[x,y];
+		}
+
+		GameObject newTile;
+		BreakableTile tileScript;
+		Vector3 offset = new Vector3 (0.5f, 0.5f);
+		for (int y = 0; y < newColumnTypes.Length; y++) 
+		{
+			switch (tileStates[x,y]) 
+			{
+				case BreakableTile.TileType.Empty:
+					break;
+				case BreakableTile.TileType.Block:
+					newTile = Instantiate(tilePrefab) as GameObject;
+					tileScript = newTile.GetComponent<BreakableTile>();
+					newTile.transform.position = new Vector3(columnCounter,y) + offset;
+					break;
+				case BreakableTile.TileType.Death:
+					newTile = Instantiate(tilePrefab) as GameObject;
+					tileScript = newTile.GetComponent<BreakableTile>();
+					newTile.transform.position = new Vector3(columnCounter,y) + offset;
+					newTile.renderer.material.color = Color.red;
+					break;
+				case BreakableTile.TileType.Coin:
+					newTile = Instantiate(tilePrefab) as GameObject;
+					tileScript = newTile.GetComponent<BreakableTile>();
+					newTile.transform.position = new Vector3(columnCounter,y) + offset;
+					newTile.renderer.material.color = Color.yellow;
+					break;
+			}
+		}
+
 		++columnCounter;
 	}
-
+	
 	// Use this for initialization
-	private void Start () 
+	private IEnumerator Start () 
 	{
 		tilePool = new Stack<GameObject> ();
 
 		if (levelMap != null)
 			DefineNewLevel (levelMap);
-	}
-	
-	// Update is called once per frame
-	private void Update () 
-	{
-	
+
+		columnCounter = levelMap.width;
+
+		while (true) 
+		{
+			yield return new WaitForSeconds(0.2f);
+			GenerateNextColumn();
+		}
+
 	}
 }
