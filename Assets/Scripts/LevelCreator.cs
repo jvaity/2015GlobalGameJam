@@ -15,15 +15,15 @@ public class LevelCreator {
             for (int x = 0; x < image.width; x++)
             {
                 Color pixel = image.GetPixel(x, y);
-                if (pixel.r == 1)
+                if (pixel == Color.red)
                 {
                     tiles[x,y] = BreakableTile.TileType.Death;
                 }
-                else if (pixel.g == 1)
+                else if (pixel == Color.green)
                 {
                     tiles[x,y] = BreakableTile.TileType.Block;
                 }
-                else if (pixel.b == 1)
+                else if (pixel == Color.blue)
                 {
                     tiles[x,y] = BreakableTile.TileType.Coin;
                 }
