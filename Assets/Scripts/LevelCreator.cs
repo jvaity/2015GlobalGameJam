@@ -10,8 +10,8 @@ public class LevelCreator : MonoBehaviour {
         {
             for (int x = 0; x < image.width; x++)
             {
-                Color pixel = image.GetPixel(x, j);
-                if (pixel.a == 0)
+                Color pixel = image.GetPixel(x, y);
+                if (pixel == Color.white)
                     continue;
                 else if (pixel.r == 1)
                 {
