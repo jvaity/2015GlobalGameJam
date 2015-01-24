@@ -93,4 +93,12 @@ public class QQLevelGenerator
 			tilesArray[(int)coordinates.x, (int)coordinates.y] =  newType;
 		}
 	}
+
+    public void Dispose()
+    {
+        foreach (QQTile tile in tileInstances)
+        {
+            GameObject.Destroy(tile.gameObject);
+        }
+    }
 }
