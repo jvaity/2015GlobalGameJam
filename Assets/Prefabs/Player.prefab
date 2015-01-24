@@ -109,9 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: .100000001
-  maxXSpeed: .100000001
+  maxXSpeed: .0599999987
   maxYSpeed: .100000001
-  jumpSpeed: 10
+  jumpSpeed: .100000001
   gravity: .100000001
   currentTileType: 0
 --- !u!1001 &100100000
