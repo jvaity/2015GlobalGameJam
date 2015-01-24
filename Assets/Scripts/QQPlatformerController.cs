@@ -6,34 +6,33 @@ public class QQPlatformerController : MonoBehaviour
     //private Vector2 currentTile;
     private Vector3 velocity;
 
-    public float acceleration   = 0.2f;
-    public float maxSpeed       = 5.0f;
+    public float acceleration   = 0.01f;
+    public float maxSpeed       = 1.0f;
     public float jumpSpeed      = 10.0f;
-    public float gravity        = 2.0f;
+    public float gravity        = 0.001f;
 
     private bool grounded;
-    private CircleCollider2D circleCollider;
-
+    private bool jumped;
     private QQLevelGenerator levelGenerator;
 
+    private Transform floorCheck;
+    private float radius;
     private Vector3 MinYPos
     {
-        get { return transform.position - (Vector3.up * circleCollider.radius); }
+        get { return floorCheck.position; }
     }
 
-    private Vector3 MaxXPos
-    {
-        get { return transform.position + (Vector3.right * circleCollider.radius); }
-    }
+    public TileType currentTileType;
 
-	// Use this for initialization
 	void Start () 
     {
-        circleCollider = GetComponent<CircleCollider2D>();
         levelGenerator = QQGameManager.Instance.LevelGenerator;
+        floorCheck = transform.FindChild("BottomPos");
+
+        if (floorCheck != null)
+            radius = Vector3.Distance(transform.position, floorCheck.position);
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
         Move();
@@ -53,100 +52,67 @@ public class QQPlatformerController : MonoBehaviour
         ApplyGravity();
         Jump();
 
+        velocity = LimitVel();
+
         transform.position += velocity;
-    }
-
-    private void ApplyAcceleration()
-    {
-        if (grounded)
-        {
-            if (velocity.x <= maxSpeed)
-            {
-                velocity.x += acceleration;
-
-                if (velocity.x >= maxSpeed)
-                    velocity.x = maxSpeed;
-            }
-        }
-    }
-
-    private void ApplyGravity()
-    {
-        if (grounded)
-            velocity.y -= gravity;
-    }
-
-    private void Jump()
-    {
-        if (grounded && Input.GetKeyDown(KeyCode.Space))
-            velocity.y += jumpSpeed;
     }
 
     private void CheckIfGrounded()
     {
         TileType tileTypeBelow = levelGenerator.TileTypeAtPosition(MinYPos);
 
+        currentTileType = tileTypeBelow;
+        
         switch (tileTypeBelow)
         {
             case TileType.Empty:
                 grounded = false;
                 break;
             case TileType.Block:
-                grounded = true;
-                //DeleteOnNextLoop();
-                transform.position = new Vector3(transform.position.x, Mathf.CeilToInt(MinYPos.y) + circleCollider.radius, transform.position.z);
-                break;
-            case TileType.Death:
-                //Die();
-                break;
-            case TileType.Coin:
-                //Collect();
-                break;
-            case TileType.Spawn:
+                if (!jumped)
+                {
+                    grounded = true;
+
+                    Debug.Log("Setting y Pos to: " + (Mathf.CeilToInt(MinYPos.y) + (radius * 2.0f)));
+                    transform.position = new Vector3(transform.position.x, Mathf.CeilToInt(MinYPos.y) + (radius * 2.0f), transform.position.z);
+                }
                 break;
         }
     }
 
-    private void CheckCollisionForward()
+    private void ApplyAcceleration()
     {
-        TileType tileTypeForward = levelGenerator.TileTypeAtPosition(MaxXPos);
-
-        switch (tileTypeForward)
-        {
-            case TileType.Block:
-                grounded = true;
-                transform.position = new Vector3(transform.position.x, Mathf.CeilToInt(MinYPos.y) + circleCollider.radius, transform.position.z);
-                break;
-            case TileType.Coin:
-                //Collect();
-                break;
-            case TileType.Spawn:
-                break;
-        }
+        if (velocity.x < maxSpeed)
+            velocity.x += acceleration * Time.deltaTime;
     }
 
-    //private void EatTile()
-    //{
-    //    //Eat Sprite/Anim
+    private void ApplyGravity()
+    {
+        if (!grounded)
+            velocity.y -= gravity * Time.deltaTime;
+        else
+            velocity.y = 0.0f;
 
-    //    //Remove Block on GameManager
-    //    QQGameManager.Instance.RemoveBlock(true);
-    //}
+        if (velocity.y <= 0.0f && jumped)
+            jumped = false;
+    }
 
-    //private void Collect()
-    //{
-    //    //Collect Coin on GameManager
-    //    QQGameManager.Instance.PickUpCollectible();
-    //}
+    private void Jump()
+    {
+        if (grounded && Input.GetKeyDown(KeyCode.Space))
+            velocity.y += jumpSpeed * Time.deltaTime;
+    }
 
-    //private void DeleteOnNextLoop()
-    //{
-    //    QQGameManager.Instance.RemoveBlock(false);
-    //}
+    private Vector3 LimitVel()
+    {
+        Vector3 vel = velocity;
 
-    //private void Die()
-    //{
-    //    velocity = Vector3.zero;
-    //    QQGameManager.Instance.GameOver();
-    //}
+        if (vel.x > maxSpeed)
+            vel.x = maxSpeed;
+
+        if (Mathf.Abs(vel.y) > maxSpeed)
+            vel.y = (vel.y >= 0) ? maxSpeed : -maxSpeed;
+
+        return vel;
+    }
 }
