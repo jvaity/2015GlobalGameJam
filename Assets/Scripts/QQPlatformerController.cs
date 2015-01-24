@@ -24,6 +24,11 @@ public class QQPlatformerController : MonoBehaviour
         get { return floorCheck.position; }
     }
 
+    private Vector3 MaxXPos
+    {
+        get { return transform.position; }
+    }
+
     private float ledgeTolerance = 0.3f;
 
     //Debug
@@ -52,6 +57,7 @@ public class QQPlatformerController : MonoBehaviour
     private void Move()
     {
         CheckIfGrounded();
+        CheckCollisionRight();
 
         ApplyAcceleration();
         ApplyGravity();
@@ -88,8 +94,14 @@ public class QQPlatformerController : MonoBehaviour
                 break;
         }
 
+        //Debug while we have no kill floor
         if (transform.position.y <= 0.5f)
             grounded = true;
+    }
+
+    private void CheckCollisionRight()
+    {
+        levelGenerator.CollideAtPosition(MaxXPos, true);
     }
 
     private void ApplyAcceleration()
