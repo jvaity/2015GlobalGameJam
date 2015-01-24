@@ -78,6 +78,7 @@ public class LevelLooper : MonoBehaviour
 	public void RegisterTileState(BreakableTile.TileType newState, Vector2 coords)
 	{
 		tileStates [(int)coords.x % levelMap.width, (int)coords.y] = newState;
+        int test = (int)coords.x % levelMap.width;
 	}
 
 	public void GenerateNextColumn()
