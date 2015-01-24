@@ -12,6 +12,8 @@ public class BreakableTile : MonoBehaviour
 	}
  
 	private TileType type;
+	public Vector2 coordinate;
+	public LevelLooper looper;
 
 	public TileType Type
 	{
@@ -22,10 +24,17 @@ public class BreakableTile : MonoBehaviour
 		}
 	}
 
+	public void Init(LevelLooper looper, Vector2 coords)
+	{
+		this.looper = looper;
+		coordinate = coords;
+	}
+
 	private void ChangeTileType(TileType newType)
 	{
 		type = newType;
 		this.gameObject.tag = type.ToString();
+		looper.RegisterTileState (newType, coordinate);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)

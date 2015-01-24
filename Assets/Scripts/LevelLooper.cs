@@ -36,7 +36,7 @@ public class LevelLooper : MonoBehaviour
 		{
 			for (int y = 0; y < levelMap.height; y++) 
 			{
-				BreakableTile tileScript;
+				BreakableTile tileScript = null;
 
 				switch (tileStates[x,y]) 
 				{
@@ -64,8 +64,19 @@ public class LevelLooper : MonoBehaviour
 						newTile.collider2D.isTrigger = true;
 					break;
 				}
+
+				if (tileScript != null)
+				{
+					tileScript.Init(this, new Vector2(x,y));
+					tileScript.Type = tileStates[x,y];
+				}
 			}
 		}
+	}
+
+	public void RegisterTileState(BreakableTile.TileType newState, Vector2 coords)
+	{
+		tileStates [(int)coords.x % levelMap.width, (int)coords.y] = newState;
 	}
 
 	public void GenerateNextColumn()
@@ -111,7 +122,10 @@ public class LevelLooper : MonoBehaviour
 			}
 
 			if (tileScript != null)
+			{
+				tileScript.Init(this, new Vector2(x,y));
 				tileScript.Type = tileStates[x,y];
+			}
 		}
 
 		++columnCounter;
