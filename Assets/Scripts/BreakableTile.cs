@@ -50,7 +50,7 @@ public class BreakableTile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (collider.CompareTag ("Player"))
+        if (col.gameObject.tag == ("Player"))
         {
             switch (type)
             {
