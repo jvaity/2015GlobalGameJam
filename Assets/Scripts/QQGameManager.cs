@@ -19,6 +19,7 @@ public class QQGameManager : MonoBehaviour {
     [SerializeField]
     private Texture2D[] maps;
     [SerializeField]
+    QQPlatformerController platformController;
 
     #endregion
 
@@ -63,6 +64,13 @@ public class QQGameManager : MonoBehaviour {
         get
         {
             return levelGenerator;
+        }
+    }
+    public QQPlatformerController PlatformController
+    {
+        get
+        {
+            return platformController;
         }
     }
 
