@@ -11,7 +11,7 @@ public class BreakableTile : MonoBehaviour
 		Coin
 	}
  
-	private TileType type;
+	public TileType type;
 	public Vector2 coordinate;
 	public LevelLooper looper;
 

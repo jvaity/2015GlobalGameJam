@@ -12,7 +12,8 @@ public class LevelLooper : MonoBehaviour
 	private float generationFrequency = 0.2f;
 	[SerializeField]
 	private bool deleteTiles;
-
+	[SerializeField]
+	private Transform player;
 
     private BreakableTile.TileType[,] tileStates = new BreakableTile.TileType[30, 10];
 	//private GameObject[,] tileInstances = new GameObject[30, 10];
@@ -77,13 +78,20 @@ public class LevelLooper : MonoBehaviour
 
 	public void RegisterTileState(BreakableTile.TileType newState, Vector2 coords)
 	{
-		tileStates [(int)coords.x % levelMap.width, (int)coords.y] = newState;
+		tileStates [(int)coords.x, (int)coords.y] = newState;
+		Debug.Log (coords.ToString() + ":" + newState.ToString() + ":" + tileStates[(int)coords.x, (int)coords.y].ToString());
 	}
 
 	public void GenerateNextColumn()
 	{
 		BreakableTile.TileType[] newColumnTypes = new BreakableTile.TileType[levelMap.height];
 		int x = columnCounter % levelMap.width;
+
+		bool columnRecentlyUpdated = (int)(player.position.x % levelMap.width) - 3 == x;
+		//Debug.Log ((int)(player.position.x - 1 % levelMap.width) + ":" + x);
+		if (!columnRecentlyUpdated)
+			return;
+
 		for (int y = 0; y < levelMap.height; y++) 
 		{
 			newColumnTypes[y] = tileStates[x,y];
@@ -130,6 +138,11 @@ public class LevelLooper : MonoBehaviour
 		}
 
 		++columnCounter;
+
+		Debug.Break();
+
+		if (deleteTiles)
+			DeleteTrailingColumn ();
 	}
 
 	private void DeleteTrailingColumn()
@@ -156,10 +169,10 @@ public class LevelLooper : MonoBehaviour
 
 		while (true) 
 		{
-			yield return new WaitForSeconds(generationFrequency);
+			yield return null;//new WaitForSeconds(generationFrequency);
 			GenerateNextColumn();
-			if (deleteTiles)
-				DeleteTrailingColumn ();
+//			if (deleteTiles)
+//				DeleteTrailingColumn ();
 		}
 
 	}
