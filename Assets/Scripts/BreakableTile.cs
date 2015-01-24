@@ -28,7 +28,7 @@ public class BreakableTile : MonoBehaviour
 		this.gameObject.tag = type.ToString();
 	}
 
-	private void OnTriggerEnter2d(Collider2D collider)
+	private void OnTriggerEnter2D(Collider2D collider)
 	{
 		if (collider.CompareTag ("Player")) 
 		{
