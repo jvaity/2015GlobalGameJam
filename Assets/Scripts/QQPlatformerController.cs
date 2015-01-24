@@ -54,7 +54,7 @@ public class QQPlatformerController : MonoBehaviour
     //Debug
     public TileType currentTileType;
 
-	IEnumerator Start () 
+	void Start () 
     {
         levelGenerator = QQGameManager.Instance.LevelGenerator;
         floorCheck = transform.Find("BottomPos");
@@ -62,17 +62,17 @@ public class QQPlatformerController : MonoBehaviour
         if (floorCheck != null)
             radius = Vector3.Distance(transform.position, floorCheck.position);
 
-        while (true)
-        {
-            Move();
-            yield return null;
-        }
+        //while (true)
+        //{
+        //    Move();
+            //yield return null;
+        //}
 	}
-	
-    //void Update () 
-    //{
-    //    Move();
-    //}
+
+    void Update()
+    {
+        Move();
+    }
 
     public void Spawn(Vector3 position)
     {
@@ -120,7 +120,8 @@ public class QQPlatformerController : MonoBehaviour
                     //if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
                     //{
                         grounded = true;
-                        transform.position = new Vector3(transform.position.x, Mathf.Ceil(MinYPos.y) + radius, transform.position.z);
+                        if (transform.position.y < previousGroundCheckPos.y + 1.4f)
+                            transform.position = new Vector3(transform.position.x, previousGroundCheckPos.y + 1.4f, transform.position.z);
                     //}
                 //}
                 break;
