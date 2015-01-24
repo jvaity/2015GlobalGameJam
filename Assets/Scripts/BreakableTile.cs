@@ -13,7 +13,7 @@ public class BreakableTile : MonoBehaviour
  
 	private TileType type;
 
-	private TileType Type
+	public TileType Type
 	{
 		get { return type; }
 		set 

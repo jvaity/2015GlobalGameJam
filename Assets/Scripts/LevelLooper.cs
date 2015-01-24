@@ -78,7 +78,7 @@ public class LevelLooper : MonoBehaviour
 		}
 
 		GameObject newTile;
-		BreakableTile tileScript;
+		BreakableTile tileScript = null;
 		Vector3 offset = new Vector3 (0.5f, 0.5f);
 		for (int y = 0; y < newColumnTypes.Length; y++) 
 		{
@@ -109,6 +109,9 @@ public class LevelLooper : MonoBehaviour
 					newTile.collider2D.isTrigger = true;
 				break;
 			}
+
+			if (tileScript != null)
+				tileScript.Type = tileStates[x,y];
 		}
 
 		++columnCounter;
