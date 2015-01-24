@@ -30,6 +30,7 @@ public class QQGameManager : MonoBehaviour {
 
 
     private GameState currentState;
+    private QQLevelGenerator levelGenerator;
 
 
     #region Accessors
@@ -76,11 +77,29 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+    public void RemoveBlock(bool immediatley)
+    {
+        
+    }
+
+    public void PickUpCollectible()
+    {
+
+    }
+
+    public void GameOver()
+    {
+
+    }
+
     private void Awake()
     {
         if (instance != null)
             Destroy(this);
         instance = this;
+
+        // Create Classes
+        levelGenerator = new QQLevelGenerator();
 
         // Use this to Init any classes
     }
