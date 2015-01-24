@@ -9,7 +9,10 @@ public class LevelLooper : MonoBehaviour
 	[SerializeField]
 	private GameObject tilePrefab;
 
+
     private BreakableTile.TileType[,] tileStates = new BreakableTile.TileType[30, 10];
+	//private GameObject[,] tileInstances = new GameObject[30, 10];
+	private Queue<GameObject> objectDeletionQueue;
 
 	private Stack<GameObject> tilePool;
 	private int columnCounter;
@@ -40,18 +43,21 @@ public class LevelLooper : MonoBehaviour
 						newTile = Instantiate(tilePrefab) as GameObject;
 						tileScript = newTile.GetComponent<BreakableTile>();
 						newTile.transform.position = new Vector3(x,y) + offset;
+						objectDeletionQueue.Enqueue(newTile);
 						break;
 					case BreakableTile.TileType.Death:
 						newTile = Instantiate(tilePrefab) as GameObject;
 						tileScript = newTile.GetComponent<BreakableTile>();
 						newTile.transform.position = new Vector3(x,y) + offset;
 						newTile.renderer.material.color = Color.red;
+						objectDeletionQueue.Enqueue(newTile);
 						break;
 					case BreakableTile.TileType.Coin:
 						newTile = Instantiate(tilePrefab) as GameObject;
 						tileScript = newTile.GetComponent<BreakableTile>();
 						newTile.transform.position = new Vector3(x,y) + offset;
 						newTile.renderer.material.color = Color.yellow;
+						objectDeletionQueue.Enqueue(newTile);
 					break;
 				}
 			}
@@ -75,34 +81,48 @@ public class LevelLooper : MonoBehaviour
 			switch (tileStates[x,y]) 
 			{
 				case BreakableTile.TileType.Empty:
+					objectDeletionQueue.Enqueue(null);
 					break;
 				case BreakableTile.TileType.Block:
 					newTile = Instantiate(tilePrefab) as GameObject;
 					tileScript = newTile.GetComponent<BreakableTile>();
 					newTile.transform.position = new Vector3(columnCounter,y) + offset;
+					objectDeletionQueue.Enqueue(newTile);
 					break;
 				case BreakableTile.TileType.Death:
 					newTile = Instantiate(tilePrefab) as GameObject;
 					tileScript = newTile.GetComponent<BreakableTile>();
 					newTile.transform.position = new Vector3(columnCounter,y) + offset;
 					newTile.renderer.material.color = Color.red;
+					objectDeletionQueue.Enqueue(newTile);
 					break;
 				case BreakableTile.TileType.Coin:
 					newTile = Instantiate(tilePrefab) as GameObject;
 					tileScript = newTile.GetComponent<BreakableTile>();
 					newTile.transform.position = new Vector3(columnCounter,y) + offset;
 					newTile.renderer.material.color = Color.yellow;
+					objectDeletionQueue.Enqueue(newTile);
 					break;
 			}
 		}
 
 		++columnCounter;
 	}
-	
+
+	private void DeleteTrailingColumn()
+	{
+		for (int i = 0; i < levelMap.height; i++) 
+		{
+			if (objectDeletionQueue.Peek() != null)
+				DestroyImmediate(objectDeletionQueue.Dequeue());
+		}
+	}
+
 	// Use this for initialization
 	private IEnumerator Start () 
 	{
 		tilePool = new Stack<GameObject> ();
+		objectDeletionQueue = new Queue<GameObject> ();
 
 		if (levelMap != null)
 			DefineNewLevel (levelMap);
@@ -113,6 +133,7 @@ public class LevelLooper : MonoBehaviour
 		{
 			yield return new WaitForSeconds(0.2f);
 			GenerateNextColumn();
+			DeleteTrailingColumn ();
 		}
 
 	}
