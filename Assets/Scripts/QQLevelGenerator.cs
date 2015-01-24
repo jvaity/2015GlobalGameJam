@@ -11,6 +11,16 @@ public class QQLevelGenerator : MonoBehaviour
 	private GameObject tilePrefab;
 	private List<QQTile> tileInstances;
 
+	public int MapHeight
+	{
+		get { return mapHeight; }
+	}
+	
+	public int MapWidth
+	{
+		get { return mapWidth; }
+	}
+
 	public TileType TileTypeAtPosition(Vector3 pos)
 	{
 		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
@@ -25,12 +35,22 @@ public class QQLevelGenerator : MonoBehaviour
 		tilePrefab = tile;
 		tileInstances = new List<QQTile>();
 		
-		
+		StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	private IEnumerator ColumnGeneratorRoutine()
+	private IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
 	{
-		yield return null;
+		if (startingAmount > 0)
+			GenerateColumns(0, startingAmount);
+		
+		//int playerMapPos
+		int columnIndex = startingAmount;
+		while (QQGameManager.Instance.CurrentState == QQGameManager.GameState.Game) 
+		{
+			GenerateColumn(columnIndex);
+			
+			yield return new WaitForSeconds(0.2f);
+		}
 	}
 
 	private void GenerateColumn(int columnIndex)
