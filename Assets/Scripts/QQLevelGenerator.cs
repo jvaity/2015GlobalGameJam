@@ -36,7 +36,7 @@ public class QQLevelGenerator
 		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
 	}
 	
-	private IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
+	public IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
 	{
 		if (startingAmount > 0)
 			GenerateColumns(0, startingAmount);
