@@ -33,7 +33,7 @@ public class QQLevelGenerator
 
 	public TileType TileTypeAtPosition(Vector3 pos)
 	{
-		if (tilesArray == null || tilesArray.Length < pox.x * pos.y)
+		if (tilesArray == null || tilesArray.Length < pos.x * pos.y)
 			return TileType.Empty;
 			
 		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
@@ -49,6 +49,7 @@ public class QQLevelGenerator
 		while (true) 
 		{
 			GenerateColumn(columnIndex++);
+			DeleteColumn(0);
 			
 			yield return new WaitForSeconds(0.2f);
 		}
