@@ -6,10 +6,11 @@ public class QQPlatformerController : MonoBehaviour
     //private Vector2 currentTile;
     private Vector3 velocity;
 
-    public float acceleration   = 0.01f;
-    public float maxSpeed       = 1.0f;
-    public float jumpSpeed      = 10.0f;
-    public float gravity        = 0.001f;
+    public float acceleration    = 0.01f;
+    public float maxXSpeed       = 1.0f;
+    public float maxYSpeed       = 1.0f;
+    public float jumpSpeed       = 10.0f;
+    public float gravity         = 0.001f;
 
     private bool grounded;
     private bool jumped;
@@ -17,17 +18,21 @@ public class QQPlatformerController : MonoBehaviour
 
     private Transform floorCheck;
     private float radius;
+    private float floorCheckOffset = 0.01f;
     private Vector3 MinYPos
     {
         get { return floorCheck.position; }
     }
 
+    private float ledgeTolerance = 0.3f;
+
+    //Debug
     public TileType currentTileType;
 
 	void Start () 
     {
         levelGenerator = QQGameManager.Instance.LevelGenerator;
-        floorCheck = transform.FindChild("BottomPos");
+        floorCheck = transform.Find("BottomPos");
 
         if (floorCheck != null)
             radius = Vector3.Distance(transform.position, floorCheck.position);
@@ -55,6 +60,9 @@ public class QQPlatformerController : MonoBehaviour
         velocity = LimitVel();
 
         transform.position += velocity;
+
+        if (transform.position.y < 0.5f)
+            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
     }
 
     private void CheckIfGrounded()
@@ -69,12 +77,13 @@ public class QQPlatformerController : MonoBehaviour
                 grounded = false;
                 break;
             case TileType.Block:
-                if (!jumped)
+                if (!jumped && velocity.y <= 0.0f)
                 {
-                    grounded = true;
-
-                    Debug.Log("Setting y Pos to: " + (Mathf.CeilToInt(MinYPos.y) + (radius * 2.0f)));
-                    transform.position = new Vector3(transform.position.x, Mathf.CeilToInt(MinYPos.y) + (radius * 2.0f), transform.position.z);
+                    if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
+                    {
+                        grounded = true;
+                        transform.position = new Vector3(transform.position.x, Mathf.Ceil(MinYPos.y) + radius, transform.position.z);
+                    }
                 }
                 break;
         }
@@ -82,7 +91,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void ApplyAcceleration()
     {
-        if (velocity.x < maxSpeed)
+        if (velocity.x < maxXSpeed)
             velocity.x += acceleration * Time.deltaTime;
     }
 
@@ -100,18 +109,21 @@ public class QQPlatformerController : MonoBehaviour
     private void Jump()
     {
         if (grounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            jumped = true;
             velocity.y += jumpSpeed * Time.deltaTime;
+        }
     }
 
     private Vector3 LimitVel()
     {
         Vector3 vel = velocity;
 
-        if (vel.x > maxSpeed)
-            vel.x = maxSpeed;
+        if (vel.x > maxXSpeed)
+            vel.x = maxXSpeed;
 
-        if (Mathf.Abs(vel.y) > maxSpeed)
-            vel.y = (vel.y >= 0) ? maxSpeed : -maxSpeed;
+        if (Mathf.Abs(vel.y) > maxYSpeed)
+            vel.y = (vel.y >= 0) ? maxYSpeed : -maxYSpeed;
 
         return vel;
     }
