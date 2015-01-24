@@ -8,7 +8,10 @@ public class LevelLooper : MonoBehaviour
 	private Texture2D levelMap;
 	[SerializeField]
 	private GameObject tilePrefab;
-
+	[SerializeField]
+	private float generationFrequency = 0.2f;
+	[SerializeField]
+	private bool deleteTiles;
 
     private BreakableTile.TileType[,] tileStates = new BreakableTile.TileType[30, 10];
 	//private GameObject[,] tileInstances = new GameObject[30, 10];
@@ -115,6 +118,8 @@ public class LevelLooper : MonoBehaviour
 		{
 			if (objectDeletionQueue.Peek() != null)
 				DestroyImmediate(objectDeletionQueue.Dequeue());
+			else
+				objectDeletionQueue.Dequeue();
 		}
 	}
 
@@ -131,9 +136,10 @@ public class LevelLooper : MonoBehaviour
 
 		while (true) 
 		{
-			yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(generationFrequency);
 			GenerateNextColumn();
-			DeleteTrailingColumn ();
+			if (deleteTiles)
+				DeleteTrailingColumn ();
 		}
 
 	}
