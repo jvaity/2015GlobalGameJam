@@ -9,6 +9,14 @@ public class QQTile : MonoBehaviour {
     private Vector2 coordinates;
     private TileType currentType;
 
+    public TileType CurrentType
+    {
+        get
+        {
+            return currentType;
+        }
+    }
+
 	public static QQTile CreateTile (Vector2 coordinates, TileType type)
     {
         if (type == TileType.Empty)

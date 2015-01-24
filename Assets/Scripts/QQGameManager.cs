@@ -132,6 +132,8 @@ public class QQGameManager : MonoBehaviour {
             Destroy(this);
         instance = this;
 
+        Application.targetFrameRate = 60;
+
         // Create Classes
         levelGenerator = new QQLevelGenerator(maps[currentLevel]);
 

@@ -102,6 +102,7 @@ public class QQPlatformerController : MonoBehaviour
                 grounded = false;
                 break;
             case TileType.Block:
+            case TileType.Coin:
                 //if (!jumped && velocity.y <= 0.0f)
                 //{
                     //if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
@@ -131,7 +132,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!grounded)
+        if (!grounded && previousForwardCheckType != TileType.Block && previousForwardCheckType != TileType.Coin )
             velocity.y -= gravity * Time.deltaTime;
         else
             velocity.y = 0.0f;
@@ -143,7 +144,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void Jump()
     {
-        if (grounded && Input.GetKeyDown(KeyCode.Space))
+        if ((grounded || previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin) && Input.GetKeyDown(KeyCode.Space))
         {
             jumped = true;
             grounded = false;
