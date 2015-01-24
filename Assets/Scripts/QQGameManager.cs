@@ -16,6 +16,8 @@ public class QQGameManager : MonoBehaviour {
 
     [SerializeField]
     private GameObject tilePrefab;
+    [SerializeField]
+    private Texture2D[] maps;
 
     #endregion
 
@@ -99,7 +101,7 @@ public class QQGameManager : MonoBehaviour {
         instance = this;
 
         // Create Classes
-        levelGenerator = new QQLevelGenerator();
+        levelGenerator = new QQLevelGenerator(maps[0]);
 
         // Use this to Init any classes
     }
