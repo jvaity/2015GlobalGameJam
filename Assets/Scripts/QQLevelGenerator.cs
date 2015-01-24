@@ -9,7 +9,7 @@ public class QQLevelGenerator
 	private Texture2D textureMap;
 	private int mapWidth, mapHeight;
 	private List<QQTile> tileInstances;
-	private int instanceStartX;
+    private int deleteCounter = 0;
 
 	public int MapHeight
 	{
@@ -32,9 +32,50 @@ public class QQLevelGenerator
 		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	public TileType TileTypeAtPosition(Vector3 pos)
-	{		
-		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
+	public TileType CollideAtPosition(Vector3 pos, bool inBlock = false)
+	{
+        if (pos.x < 0 || pos.y < 0)
+            return TileType.Empty;
+
+        Vector2 positionInGrid = new Vector2((int)pos.x % mapWidth, (int)pos.y % mapHeight);
+        TileType type = tilesArray[(int)positionInGrid.x, (int)positionInGrid.y];
+
+        switch (type)
+        {
+            case TileType.Empty:
+                break;
+            case TileType.Block:
+                tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
+                if (inBlock)
+                {
+                    int index = ((int)positionInGrid.x * mapHeight) + (deleteCounter % mapHeight) + (int)positionInGrid.y;
+                    QQTile tileToDelete = tileInstances[index];
+                    if (tileToDelete != null)
+                        GameObject.Destroy(tileToDelete.gameObject);
+                }
+                break;
+            case TileType.Death:
+                QQGameManager.Instance.GameOver();
+                break;
+            case TileType.Coin:
+                if (inBlock)
+                {
+                    QQGameManager.Instance.CollectiblePickedUp();
+                    tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
+
+                    int index = ((int)positionInGrid.x * mapHeight) + (deleteCounter % mapHeight) + (int)positionInGrid.y;
+                    QQTile tileToDelete = tileInstances[index];
+                    if (tileToDelete != null)
+                        GameObject.Destroy(tileToDelete.gameObject);
+                }
+                break;
+            case TileType.Spawn:
+                break;
+            default:
+                break;
+        }
+			
+		return type;
 	}
 	
 	public IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
@@ -81,12 +122,13 @@ public class QQLevelGenerator
 		if (columnIndex > (tileInstances.Count / mapHeight))
 			return;
 		
-		int removalStartIdx = columnIndex / mapHeight;
+		int removalStartIdx = columnIndex * mapHeight;
 		QQTile[] tiles = new QQTile[mapHeight];
 		for (int i = removalStartIdx; i < removalStartIdx + mapHeight; i++)
 			tiles[i] = tileInstances[i];
 			
 		tileInstances.RemoveRange(removalStartIdx, mapHeight);
+        deleteCounter += mapHeight;
 		
 		for (int i = 0; i < tiles.Length; i++) 
 		{
