@@ -23,8 +23,14 @@ public class QQPlatformerController : MonoBehaviour
     {
         get
         {
-            RVDrawer.QDrawCross(floorCheck.position, Color.blue, 1f, Vector3.forward, 2);
             return floorCheck.position;
+        }
+    }
+    private Vector3 MaxYPos
+    {
+        get
+        {
+            return transform.position + new Vector3(0, 0.5f, 0);
         }
     }
 
@@ -41,6 +47,9 @@ public class QQPlatformerController : MonoBehaviour
 
     private Vector2 previousForwardCheckPos;
     private TileType previousForwardCheckType;
+
+    private Vector2 previousUpCheckPos;
+    private TileType previousUpCheckType;
 
     //Debug
     public TileType currentTileType;
@@ -75,6 +84,7 @@ public class QQPlatformerController : MonoBehaviour
     {
         CheckIfGrounded();
         CheckCollisionRight();
+        CheckCollisionUp();
 
         ApplyAcceleration();
         ApplyGravity();
@@ -86,6 +96,8 @@ public class QQPlatformerController : MonoBehaviour
 
         if (transform.position.y < 0.5f)
             transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+
+        SnapPos();
     }
 
     private void CheckIfGrounded()
@@ -119,6 +131,11 @@ public class QQPlatformerController : MonoBehaviour
             grounded = true;
     }
 
+    private void CheckCollisionUp()
+    {
+        previousUpCheckType = levelGenerator.CollideAtPosition(MaxYPos, ref previousUpCheckPos, previousUpCheckType, false, false);
+    }
+
     private void CheckCollisionRight()
     {
         previousForwardCheckType = levelGenerator.CollideAtPosition(MaxXPos, ref previousForwardCheckPos, previousForwardCheckType, true);
@@ -132,8 +149,10 @@ public class QQPlatformerController : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!grounded && previousForwardCheckType != TileType.Block && previousForwardCheckType != TileType.Coin )
+        if (!grounded && previousForwardCheckType != TileType.Block && previousForwardCheckType != TileType.Coin)
+        {
             velocity.y -= gravity * Time.deltaTime;
+        }
         else
             velocity.y = 0.0f;
 
@@ -144,7 +163,9 @@ public class QQPlatformerController : MonoBehaviour
 
     private void Jump()
     {
-        if ((grounded || previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin) && Input.GetKeyDown(KeyCode.Space))
+        if ((grounded || previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin) && 
+            (previousUpCheckType != TileType.Coin || previousUpCheckType != TileType.Block) && 
+            Input.GetKeyDown(KeyCode.Space))
         {
             jumped = true;
             grounded = false;
@@ -167,5 +188,15 @@ public class QQPlatformerController : MonoBehaviour
         //    print("JUMPED:: Limit Vel Y: " + vel.y);
 
         return vel;
+    }
+
+    private void SnapPos()
+    {
+        if (previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin)
+        {
+            Vector3 snapPos = transform.position;
+            snapPos.y = previousForwardCheckPos.y + 0.5f;
+            transform.position = snapPos;
+        }
     }
 }
