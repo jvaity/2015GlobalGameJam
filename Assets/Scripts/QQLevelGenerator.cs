@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class QQLevelGenerator : MonoBehaviour
+public class QQLevelGenerator
 {
 	private  Vector3 TILE_POS_OFFSET = new Vector3(0.5f, 0.5f);
 	private TileType[,] tilesArray;
@@ -21,12 +21,7 @@ public class QQLevelGenerator : MonoBehaviour
 		get { return mapWidth; }
 	}
 
-	public TileType TileTypeAtPosition(Vector3 pos)
-	{
-		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
-	}
-
-	public void Init (Texture2D texMap, GameObject tile) 
+	public QQLevelGenerator (Texture2D texMap, GameObject tile) 
 	{
 		textureMap = texMap;
 		tilesArray = QQLevelParser.ParseMap (texMap);
@@ -35,9 +30,14 @@ public class QQLevelGenerator : MonoBehaviour
 		tilePrefab = tile;
 		tileInstances = new List<QQTile>();
 		
-		StartCoroutine(ColumnGeneratorRoutine(mapWidth));
+		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
+	public TileType TileTypeAtPosition(Vector3 pos)
+	{
+		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
+	}
+	
 	private IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
 	{
 		if (startingAmount > 0)
