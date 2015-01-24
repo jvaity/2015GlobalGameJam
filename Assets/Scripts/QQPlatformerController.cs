@@ -69,7 +69,7 @@ public class QQPlatformerController : MonoBehaviour
         //}
 	}
 
-    void Update()
+    void FixedUpdate()
     {
         Move();
     }
@@ -121,7 +121,9 @@ public class QQPlatformerController : MonoBehaviour
                     //{
                         grounded = true;
                         if (transform.position.y < previousGroundCheckPos.y + 1.4f)
-                            transform.position = new Vector3(transform.position.x, previousGroundCheckPos.y + 1.4f, transform.position.z);
+                        {
+                            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, previousGroundCheckPos.y + 1.4f, transform.position.z), 0.2f);
+                        }
                     //}
                 //}
                 break;
@@ -173,6 +175,9 @@ public class QQPlatformerController : MonoBehaviour
             velocity.y = jumpSpeed;
             //Debug.Log("Jump:" + velocity.y);
         }
+
+        if (velocity.y > 0 && (previousUpCheckType == TileType.Block || previousUpCheckType == TileType.Coin))
+            velocity.y = 0.0f;
     }
 
     private Vector3 LimitVel()
@@ -197,7 +202,7 @@ public class QQPlatformerController : MonoBehaviour
         {
             Vector3 snapPos = transform.position;
             snapPos.y = previousForwardCheckPos.y + 0.5f;
-            transform.position = snapPos;
+            transform.position = Vector3.Lerp(transform.position, snapPos, 0.1f);
         }
     }
 }
