@@ -21,32 +21,49 @@ public class QQPlatformerController : MonoBehaviour
     private float floorCheckOffset = 0.01f;
     private Vector3 MinYPos
     {
-        get { return floorCheck.position; }
+        get
+        {
+            RVDrawer.QDrawCross(floorCheck.position, Color.blue, 1f, Vector3.forward, 2);
+            return floorCheck.position;
+        }
     }
 
     private Vector3 MaxXPos
     {
-        get { return transform.position; }
+        get { return transform.position + (Vector3.right * radius); }
     }
 
+    //Tolerance to snapping on top of tiles or falling through them
     private float ledgeTolerance = 0.3f;
+
+    private Vector2 previousGroundCheckPos;
+    private TileType previousGroundCheckType;
+
+    private Vector2 previousForwardCheckPos;
+    private TileType previousForwardCheckType;
 
     //Debug
     public TileType currentTileType;
 
-	void Start () 
+	IEnumerator Start () 
     {
         levelGenerator = QQGameManager.Instance.LevelGenerator;
         floorCheck = transform.Find("BottomPos");
 
         if (floorCheck != null)
             radius = Vector3.Distance(transform.position, floorCheck.position);
+
+        while (true)
+        {
+            Move();
+            yield return null;
+        }
 	}
 	
-	void Update () 
-    {
-        Move();
-	}
+    //void Update () 
+    //{
+    //    Move();
+    //}
 
     public void Spawn(Vector3 position)
     {
@@ -73,24 +90,26 @@ public class QQPlatformerController : MonoBehaviour
 
     private void CheckIfGrounded()
     {
-        TileType tileTypeBelow = levelGenerator.CollideAtPosition(MinYPos);
+        TileType tileTypeBelow = previousGroundCheckType = levelGenerator.CollideAtPosition(MinYPos, ref previousGroundCheckPos, previousGroundCheckType);
 
         currentTileType = tileTypeBelow;
-        
+
+        //Debug.Log("<b><color=red>Tile type below: " + tileTypeBelow + "</color></b>");
+
         switch (tileTypeBelow)
         {
             case TileType.Empty:
                 grounded = false;
                 break;
             case TileType.Block:
-                if (!jumped && velocity.y <= 0.0f)
-                {
-                    if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
-                    {
+                //if (!jumped && velocity.y <= 0.0f)
+                //{
+                    //if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
+                    //{
                         grounded = true;
                         transform.position = new Vector3(transform.position.x, Mathf.Ceil(MinYPos.y) + radius, transform.position.z);
-                    }
-                }
+                    //}
+                //}
                 break;
         }
 
@@ -101,7 +120,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void CheckCollisionRight()
     {
-        levelGenerator.CollideAtPosition(MaxXPos, true);
+        previousForwardCheckType = levelGenerator.CollideAtPosition(MaxXPos, ref previousForwardCheckPos, previousForwardCheckType, true);
     }
 
     private void ApplyAcceleration()
@@ -117,6 +136,7 @@ public class QQPlatformerController : MonoBehaviour
         else
             velocity.y = 0.0f;
 
+        //If falling again, set jumped to false so we can collide with the top of blocks again
         if (velocity.y <= 0.0f && jumped)
             jumped = false;
     }
@@ -128,7 +148,7 @@ public class QQPlatformerController : MonoBehaviour
             jumped = true;
             grounded = false;
             velocity.y = jumpSpeed;
-            Debug.Log("Jump:" + velocity.y);
+            //Debug.Log("Jump:" + velocity.y);
         }
     }
 
