@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class QQLevelGenerator : MonoBehaviour
+public class QQLevelGenerator
 {
 	private  Vector3 TILE_POS_OFFSET = new Vector3(0.5f, 0.5f);
 	private TileType[,] tilesArray;
@@ -11,12 +11,17 @@ public class QQLevelGenerator : MonoBehaviour
 	private GameObject tilePrefab;
 	private List<QQTile> tileInstances;
 
-	public TileType TileTypeAtPosition(Vector3 pos)
+	public int MapHeight
 	{
-		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
+		get { return mapHeight; }
+	}
+	
+	public int MapWidth
+	{
+		get { return mapWidth; }
 	}
 
-	public void Init (Texture2D texMap, GameObject tile) 
+	public QQLevelGenerator (Texture2D texMap, GameObject tile) 
 	{
 		textureMap = texMap;
 		tilesArray = QQLevelParser.ParseMap (texMap);
@@ -25,12 +30,27 @@ public class QQLevelGenerator : MonoBehaviour
 		tilePrefab = tile;
 		tileInstances = new List<QQTile>();
 		
-		
+		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	private IEnumerator ColumnGeneratorRoutine()
+	public TileType TileTypeAtPosition(Vector3 pos)
 	{
-		yield return null;
+		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
+	}
+	
+	private IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
+	{
+		if (startingAmount > 0)
+			GenerateColumns(0, startingAmount);
+		
+		//int playerMapPos
+		int columnIndex = startingAmount;
+		while (QQGameManager.Instance.CurrentState == QQGameManager.GameState.Game) 
+		{
+			GenerateColumn(columnIndex);
+			
+			yield return new WaitForSeconds(0.2f);
+		}
 	}
 
 	private void GenerateColumn(int columnIndex)
