@@ -104,5 +104,6 @@ public class QQGameManager : MonoBehaviour {
         levelGenerator = new QQLevelGenerator(maps[0]);
 
         // Use this to Init any classes
+        StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
     }
 }
