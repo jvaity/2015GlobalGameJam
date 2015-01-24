@@ -61,6 +61,7 @@ public class LevelLooper : MonoBehaviour
 						newTile.transform.position = new Vector3(x,y) + offset;
 						newTile.renderer.material.color = Color.yellow;
 						objectDeletionQueue.Enqueue(newTile);
+						newTile.collider2D.isTrigger = true;
 					break;
 				}
 			}
@@ -105,7 +106,8 @@ public class LevelLooper : MonoBehaviour
 					newTile.transform.position = new Vector3(columnCounter,y) + offset;
 					newTile.renderer.material.color = Color.yellow;
 					objectDeletionQueue.Enqueue(newTile);
-					break;
+					newTile.collider2D.isTrigger = true;
+				break;
 			}
 		}
 
