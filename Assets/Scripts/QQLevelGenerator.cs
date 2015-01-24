@@ -81,9 +81,16 @@ public class QQLevelGenerator
 		
 		int removalStartIdx = columnIndex / mapHeight;
 		QQTile[] tiles = new QQTile[mapHeight];
-		for (int i = removalStartIdx; i < mapHeight; i++)
+		for (int i = removalStartIdx; i < removalStartIdx + mapHeight; i++)
 			tiles[i] = tileInstances[i];
+			
 		tileInstances.RemoveRange(removalStartIdx, mapHeight);
+		
+		for (int i = 0; i < tiles.Length; i++) 
+		{
+			if (tiles[i] != null)
+				GameObject.Destroy(tiles[i].gameObject);
+		}
 	}
 
 	private void UpdateTypeArray(Vector2 coordinates, TileType newType)
