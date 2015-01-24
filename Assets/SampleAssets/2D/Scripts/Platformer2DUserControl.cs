@@ -38,10 +38,10 @@ namespace UnitySampleAssets._2D
             //else
             //    moveSpeed = 1.0f;
 
-            if (Mathf.Approximately(rigidbody2D.velocity.x, 0.0f))
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), true);
-            else
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), false);
+            //if (Mathf.Approximately(rigidbody2D.velocity.x, 0.0f))
+            //    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), true);
+            //else
+            //    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), false);
         }
     }
 }
