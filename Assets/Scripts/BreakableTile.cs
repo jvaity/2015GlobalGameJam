@@ -51,24 +51,48 @@ public class BreakableTile : MonoBehaviour
 					break;
 				case TileType.Coin:
                     GameManager.Instance.collect();
+				this.renderer.material.color = Color.green;
 					break;
 			}
 		}
 
 	}
 
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.tag == ("Player"))
-        {
-            switch (type)
-            {
-                case TileType.Empty:
-                    //Shouldn't be colliding
-                    break;
-                case TileType.Block:
-                    //Kill block
+	private void OnCollisionEnter2D(Collision2D col)
+	{
+		if (col.gameObject.tag == ("Player"))
+		{
+			switch (type)
+			{
+			case TileType.Empty:
+				//Shouldn't be colliding
+				break;
+			case TileType.Block:
+				//Kill block
+				this.renderer.material.color = Color.blue;
+				break;
+			case TileType.Death:
+				//Die
+				break;
+			case TileType.Coin:
+				break;
+			}
+		}
+	}
+	
+	private void OnCollisionExit2D(Collision2D col)
+	{
+		if (col.gameObject.tag == ("Player"))
+		{
+			switch (type)
+			{
+			case TileType.Empty:
+				//Shouldn't be colliding
+				break;
+			case TileType.Block:
+				//Kill block
                     ChangeTileType(TileType.Empty);
+					this.renderer.material.color = Color.cyan;
                     break;
                 case TileType.Death:
                     //Die

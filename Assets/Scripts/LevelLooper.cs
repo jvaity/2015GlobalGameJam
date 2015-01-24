@@ -13,6 +13,7 @@ public class LevelLooper : MonoBehaviour
 	[SerializeField]
 	private bool deleteTiles;
 
+
     private BreakableTile.TileType[,] tileStates = new BreakableTile.TileType[30, 10];
 	//private GameObject[,] tileInstances = new GameObject[30, 10];
 	private Queue<GameObject> objectDeletionQueue;
