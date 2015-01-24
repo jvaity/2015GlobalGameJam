@@ -33,7 +33,7 @@ public class QQLevelGenerator
 		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	public TileType CollideAtPosition(Vector3 pos, ref Vector2 previousPositionInGrid, TileType preiousTileType, bool inBlock = false)
+	public TileType CollideAtPosition(Vector3 pos, ref Vector2 previousPositionInGrid, TileType preiousTileType, bool inBlock = false, bool interact = true)
 	{
         
         if (pos.x < 0 || pos.y < 0)
@@ -45,11 +45,11 @@ public class QQLevelGenerator
         if (positionInGrid == previousPositionInGrid)
             return preiousTileType;
         previousPositionInGrid = positionInGrid;
-        RVDrawer.QDrawCross(pos, Color.white, 1f, Vector3.forward);
 
         TileType type = tilesArray[(int)positionInGrid.x, (int)positionInGrid.y];
 
-        //Debug.Log("Is in Block: "+inBlock);
+        if (!interact)
+            return type;
 
         switch (type)
         {
