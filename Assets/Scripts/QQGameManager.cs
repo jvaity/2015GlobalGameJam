@@ -32,7 +32,7 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
-
+	[SerializeField]
     private GameState currentState;
     private QQLevelGenerator levelGenerator;
 

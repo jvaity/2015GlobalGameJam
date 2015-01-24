@@ -33,7 +33,7 @@ public class QQLevelGenerator
 
 	public TileType TileTypeAtPosition(Vector3 pos)
 	{
-		if (tilesArray == null || tilesArray.Length < pos.x * pos.y)
+		if (tilesArray == null || tilesArray.GetLength(0) < pos.x || tilesArray.GetLength(1) < pos.y)
 			return TileType.Empty;
 			
 		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
@@ -44,14 +44,21 @@ public class QQLevelGenerator
 		if (startingAmount > 0)
 			GenerateColumns(0, startingAmount);
 		
-		//int playerMapPos
+		int playerPos = (int)QQGameManager.Instance.PlatformController.transform.position.x;
+		int playerMapPos = 0;
+		bool playerAheadOfColumnRef = false;
 		int columnIndex = startingAmount;
 		while (true) 
 		{
-			GenerateColumn(columnIndex++);
-			DeleteColumn(0);
-			
-			yield return new WaitForSeconds(0.2f);
+			playerMapPos = playerPos % mapWidth;
+			playerAheadOfColumnRef = playerMapPos > columnIndex % mapWidth;
+		
+			if (playerAheadOfColumnRef)
+			{
+				GenerateColumn(columnIndex++);
+				DeleteColumn(0);
+			}	
+			yield return null;//new WaitForSeconds(0.2f);
 		}
 	}
 
@@ -63,8 +70,6 @@ public class QQLevelGenerator
 			typeSettings[y] = tilesArray[columnIndex % mapWidth, y];
 			tileInstances.Add(QQTile.CreateTile(new Vector3(columnIndex, y) + TILE_POS_OFFSET, typeSettings[y]));
 		}
-		
-		
 	}
 	
 	private void GenerateColumns(int startColumnIndex, int count)
