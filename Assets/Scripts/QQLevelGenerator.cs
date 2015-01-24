@@ -8,7 +8,6 @@ public class QQLevelGenerator
 	private TileType[,] tilesArray;
 	private Texture2D textureMap;
 	private int mapWidth, mapHeight;
-	private GameObject tilePrefab;
 	private List<QQTile> tileInstances;
 
 	public int MapHeight
@@ -21,13 +20,12 @@ public class QQLevelGenerator
 		get { return mapWidth; }
 	}
 
-	public QQLevelGenerator (Texture2D texMap, GameObject tile) 
+	public QQLevelGenerator (Texture2D texMap) 
 	{
 		textureMap = texMap;
 		tilesArray = QQLevelParser.ParseMap (texMap);
 		mapWidth = textureMap.width;
 		mapHeight = textureMap.height;
-		tilePrefab = tile;
 		tileInstances = new List<QQTile>();
 		
 		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
