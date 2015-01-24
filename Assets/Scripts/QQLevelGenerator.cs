@@ -11,9 +11,6 @@ public class QQLevelGenerator
 	private List<QQTile> tileInstances;
     private int deleteCounter = 0;
 
-    private Vector2 lastHit;
-    private TileType lastHitType;
-
 	public int MapHeight
 	{
 		get { return mapHeight; }
@@ -35,20 +32,20 @@ public class QQLevelGenerator
 		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	public TileType CollideAtPosition(Vector3 pos, bool inBlock = false)
+	public TileType CollideAtPosition(Vector3 pos, ref Vector2 previousPositionInGrid, TileType preiousTileType, bool inBlock = false)
 	{
-
+        
         if (pos.x < 0 || pos.y < 0)
             return TileType.Empty;
 
         Vector2 positionInGrid = new Vector2((int)pos.x % mapWidth, (int)pos.y % mapHeight);
 
-        if (positionInGrid == lastHit)
-            return lastHitType;
-        lastHit = positionInGrid;
+        if (positionInGrid == previousPositionInGrid)
+            return preiousTileType;
+        previousPositionInGrid = positionInGrid;
+        RVDrawer.QDrawCross(pos, Color.white, 1f, Vector3.forward);
 
         TileType type = tilesArray[(int)positionInGrid.x, (int)positionInGrid.y];
-        lastHitType = type;
 
         Debug.Log("Is in Block: "+inBlock);
 
