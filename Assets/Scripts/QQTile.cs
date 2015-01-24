@@ -4,7 +4,9 @@ using System.Collections;
 public class QQTile : MonoBehaviour {
 
     [SerializeField]
-    Sprite blockSprite, CollectibleSprite;
+    Sprite[] blockSprites;//, CollectibleSprite;
+    [SerializeField]
+    Color firstColour, secondColour;
 
     private Vector2 coordinates;
     private TileType currentType;
@@ -34,29 +36,34 @@ public class QQTile : MonoBehaviour {
         this.currentType = type;
 
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-
+	Debug.Log(blockSprites.Length);
         switch (type)
         {
             case TileType.Empty:
                 break;
             case TileType.Block:
-                SetSprite(renderer, blockSprite);
+                SetSprite(renderer, GetColour(), blockSprites[Random.Range(0, blockSprites.Length)]);
                 break;
             case TileType.Death:
-                SetSprite(renderer);
+                SetSprite(renderer, Color.clear);
                 break;
             case TileType.Coin:
-                SetSprite(renderer, CollectibleSprite);
+				SetSprite(renderer, Color.yellow, blockSprites[Random.Range(0, blockSprites.Length)]);
                 break;
             case TileType.Spawn:
-                SetSprite(renderer);
+                SetSprite(renderer, Color.clear);
                 break;
             default:
                 break;
         }
     }
 
-    private void SetSprite(SpriteRenderer renderer, Sprite sprite = null)
+	private Color GetColour()
+	{
+		return Color.Lerp(firstColour, secondColour, Random.Range(0f, 1f));
+	}
+
+    private void SetSprite(SpriteRenderer renderer, Color colour, Sprite sprite = null)
     {
         if (sprite == null)
             renderer.enabled = false;
@@ -64,6 +71,7 @@ public class QQTile : MonoBehaviour {
         {
             renderer.enabled = true;
             renderer.sprite = sprite;
+            renderer.color = colour;
         }
     }
 }
