@@ -36,6 +36,8 @@ public class QQGameManager : MonoBehaviour {
     private GameState currentState;
     private QQLevelGenerator levelGenerator;
 
+    private int currentLevel = 0;
+    private int numberOfCollectiblesInLevel;
 
     #region Accessors
 
@@ -96,6 +98,34 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+    public void CollectiblePickedUp()
+    {
+        numberOfCollectiblesInLevel--;
+        if (numberOfCollectiblesInLevel < 1)
+            currentState = GameState.Win;
+    }
+
+    public void GameOver()
+    {
+        currentState = GameState.Lose;
+        // show game over screen
+    }
+
+    public void StartNextLevel()
+    {
+        ++currentLevel;
+        RestartLevel();        
+    }
+
+    public void RestartLevel()
+    {
+        if (levelGenerator != null)
+            levelGenerator.Dispose();
+        levelGenerator = new QQLevelGenerator(maps[currentLevel]);
+        currentState = GameState.Game;
+        StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
+    }
+
     private void Awake()
     {
         if (instance != null)
@@ -103,9 +133,9 @@ public class QQGameManager : MonoBehaviour {
         instance = this;
 
         // Create Classes
-        levelGenerator = new QQLevelGenerator(maps[0]);
+        levelGenerator = new QQLevelGenerator(maps[currentLevel]);
 
         // Use this to Init any classes
-        StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
+        RestartLevel();
     }
 }
