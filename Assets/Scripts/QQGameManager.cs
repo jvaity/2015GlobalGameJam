@@ -18,6 +18,7 @@ public class QQGameManager : MonoBehaviour {
     private GameObject tilePrefab;
     [SerializeField]
     private Texture2D[] maps;
+    [SerializeField]
 
     #endregion
 
@@ -57,6 +58,14 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+    public QQLevelGenerator LevelGenerator
+    {
+        get
+        {
+            return levelGenerator;
+        }
+    }
+
     #endregion
 
     private void Update()
@@ -77,21 +86,6 @@ public class QQGameManager : MonoBehaviour {
             default:
                 break;
         }
-    }
-
-    public void RemoveBlock(bool immediatley)
-    {
-        
-    }
-
-    public void PickUpCollectible()
-    {
-
-    }
-
-    public void GameOver()
-    {
-
     }
 
     private void Awake()
