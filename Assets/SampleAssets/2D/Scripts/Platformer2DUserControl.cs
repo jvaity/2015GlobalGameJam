@@ -10,6 +10,8 @@ namespace UnitySampleAssets._2D
         private PlatformerCharacter2D character;
         private bool jump;
 
+        private float moveSpeed = 1.0f;
+
         private void Awake()
         {
             character = GetComponent<PlatformerCharacter2D>();
@@ -28,8 +30,18 @@ namespace UnitySampleAssets._2D
             //bool crouch = Input.GetKey(KeyCode.LeftControl);
             //float h = CrossPlatformInputManager.GetAxis("Horizontal");
             // Pass all parameters to the character control script.
-            character.Move(1.0f, false, jump);
+            character.Move(moveSpeed, false, jump);
             jump = false;
+
+            //if (Mathf.Approximately(rigidbody2D.velocity.x, moveSpeed))
+            //    moveSpeed = 0.0f;
+            //else
+            //    moveSpeed = 1.0f;
+
+            if (Mathf.Approximately(rigidbody2D.velocity.x, 0.0f))
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), true);
+            else
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), false);
         }
     }
 }
