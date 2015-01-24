@@ -12,6 +12,13 @@ public class QQGameManager : MonoBehaviour {
         Credits
     }
 
+    #region InspectorVariables
+
+    [SerializeField]
+    private GameObject tilePrefab;
+
+    #endregion
+
     private static QQGameManager instance;
     public static QQGameManager Instance
     {
@@ -21,7 +28,9 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+
     private GameState currentState;
+
 
     #region Accessors
 
@@ -34,6 +43,14 @@ public class QQGameManager : MonoBehaviour {
         set
         {
             currentState = value;
+        }
+    }
+
+    public GameObject TilePrefab
+    {
+        get
+        {
+            return tilePrefab;
         }
     }
 
