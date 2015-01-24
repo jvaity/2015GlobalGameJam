@@ -87,6 +87,9 @@ public class QQPlatformerController : MonoBehaviour
                 }
                 break;
         }
+
+        if (transform.position.y <= 0.5f)
+            grounded = true;
     }
 
     private void ApplyAcceleration()
@@ -111,7 +114,9 @@ public class QQPlatformerController : MonoBehaviour
         if (grounded && Input.GetKeyDown(KeyCode.Space))
         {
             jumped = true;
-            velocity.y += jumpSpeed * Time.deltaTime;
+            grounded = false;
+            velocity.y = jumpSpeed;
+            Debug.Log("Jump:" + velocity.y);
         }
     }
 
@@ -124,6 +129,9 @@ public class QQPlatformerController : MonoBehaviour
 
         if (Mathf.Abs(vel.y) > maxYSpeed)
             vel.y = (vel.y >= 0) ? maxYSpeed : -maxYSpeed;
+
+        //if (jumped)
+        //    print("JUMPED:: Limit Vel Y: " + vel.y);
 
         return vel;
     }
