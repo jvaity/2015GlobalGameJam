@@ -27,32 +27,37 @@ namespace UnitySampleAssets._2D
         //private Animator anim; // Reference to the player's animator component.
 
 
-        private void Awake()
+        private void Start()
         {
             // Setting up references.
-            //groundCheck = GameObject.Find("GroundCheck").transform;
+            groundCheck = GameObject.Find("GroundCheck").transform;
             ceilingCheck = transform.Find("CeilingCheck");
             //anim = GetComponent<Animator>();
 
-            groundCheckList = new List<GameObject>();
-            groundCheckList.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+            //GetGroundBlocks();
         }
 
+        //public void GetGroundBlocks()
+        //{
+        //    groundCheckList = new List<GameObject>();
+        //    groundCheckList.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+        //}
 
         private void FixedUpdate()
         {
             // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            //grounded = Physics2D.OverlapCircle(groundCheck.position, groundedRadius, whatIsGround);
+            //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Default"), (rigidbody2D.velocity.y > 0.0f));
+            grounded = Physics2D.OverlapCircle(groundCheck.position, groundedRadius, whatIsGround);
             //anim.SetBool("Ground", grounded);
 
-            grounded = false;
-            foreach (GameObject g in groundCheckList)
-            {
-                grounded = Physics2D.OverlapCircle(g.transform.position, groundedRadius, whatIsGround);
+            //grounded = false;
+            //foreach (GameObject g in groundCheckList)
+            //{
+            //    grounded = Physics2D.OverlapCircle(g.transform.position, groundedRadius, whatIsGround);
 
-                if (grounded)
-                    break;
-            }
+            //    if (grounded)
+            //        break;
+            //}
 
             // Set the vertical animation
             //anim.SetFloat("vSpeed", rigidbody2D.velocity.y);
@@ -87,13 +92,13 @@ namespace UnitySampleAssets._2D
                 rigidbody2D.velocity = new Vector2(move*maxSpeed, rigidbody2D.velocity.y);
 
                 // If the input is moving the player right and the player is facing left...
-                if (move > 0 && !facingRight)
-                    // ... flip the player.
-                    Flip();
-                    // Otherwise if the input is moving the player left and the player is facing right...
-                else if (move < 0 && facingRight)
-                    // ... flip the player.
-                    Flip();
+                //if (move > 0 && !facingRight)
+                //    // ... flip the player.
+                //    Flip();
+                //    // Otherwise if the input is moving the player left and the player is facing right...
+                //else if (move < 0 && facingRight)
+                //    // ... flip the player.
+                //    Flip();
             }
             // If the player should jump...
             if (grounded && jump)
@@ -106,15 +111,15 @@ namespace UnitySampleAssets._2D
         }
 
 
-        private void Flip()
-        {
-            // Switch the way the player is labelled as facing.
-            facingRight = !facingRight;
+        //private void Flip()
+        //{
+        //    // Switch the way the player is labelled as facing.
+        //    facingRight = !facingRight;
 
-            // Multiply the player's x local scale by -1.
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1;
-            transform.localScale = theScale;
-        }
+        //    // Multiply the player's x local scale by -1.
+        //    Vector3 theScale = transform.localScale;
+        //    theScale.x *= -1;
+        //    transform.localScale = theScale;
+        //}
     }
 }
