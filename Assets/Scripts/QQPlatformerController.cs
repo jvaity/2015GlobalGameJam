@@ -59,7 +59,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void CheckIfGrounded()
     {
-        TileType tileTypeBelow = levelGenerator.TileTypeAtPosition(MinYPos);
+        TileType tileTypeBelow = levelGenerator.CollideAtPosition(MinYPos);
 
         currentTileType = tileTypeBelow;
         

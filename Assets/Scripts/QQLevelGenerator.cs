@@ -31,12 +31,42 @@ public class QQLevelGenerator
 		//StartCoroutine(ColumnGeneratorRoutine(mapWidth));
 	}
 
-	public TileType TileTypeAtPosition(Vector3 pos)
+	public TileType CollideAtPosition(Vector3 pos, bool inBlock = false)
 	{
-		if (tilesArray == null || tilesArray.GetLength(0) < pos.x || tilesArray.GetLength(1) < pos.y)
-			return TileType.Empty;
+        if (pos.x < 0 || pos.y < 0)
+            return TileType.Empty;
+
+        Vector2 positionInGrid = new Vector2((int)pos.x % mapWidth, (int)pos.y % mapHeight);
+        TileType type = tilesArray[(int)positionInGrid.x, (int)positionInGrid.y];
+
+        switch (type)
+        {
+            case TileType.Empty:
+                break;
+            case TileType.Block:
+                tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
+                if (inBlock)
+                {
+                    //destroy gameobject
+                }
+                break;
+            case TileType.Death:
+                QQGameManager.Instance.GameOver();
+                break;
+            case TileType.Coin:
+                if (inBlock)
+                {
+                    QQGameManager.Instance.CollectiblePickedUp();
+                    tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
+                }
+                break;
+            case TileType.Spawn:
+                break;
+            default:
+                break;
+        }
 			
-		return tilesArray[(int)pos.x % mapWidth, (int)pos.y % mapHeight];
+		return type;
 	}
 	
 	public IEnumerator ColumnGeneratorRoutine(int startingAmount = 0)
@@ -84,7 +114,7 @@ public class QQLevelGenerator
 		if (columnIndex > (tileInstances.Count / mapHeight))
 			return;
 		
-		int removalStartIdx = columnIndex / mapHeight;
+		int removalStartIdx = columnIndex * mapHeight;
 		QQTile[] tiles = new QQTile[mapHeight];
 		for (int i = removalStartIdx; i < removalStartIdx + mapHeight; i++)
 			tiles[i] = tileInstances[i];
