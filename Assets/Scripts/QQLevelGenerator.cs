@@ -95,15 +95,14 @@ public class QQLevelGenerator
 		if (startingAmount > 0)
 			GenerateColumns(0, startingAmount);
 		
-		int playerPos = (int)QQGameManager.Instance.PlatformController.transform.position.x;
 		int playerMapPos = 0;
 		bool playerAheadOfColumnRef = false;
 		int columnIndex = startingAmount;
 		while (true) 
 		{
-			playerMapPos = playerPos % mapWidth;
-			playerAheadOfColumnRef = playerMapPos > columnIndex % mapWidth;
-		
+			playerMapPos = (int)QQGameManager.Instance.PlatformController.transform.position.x;
+			playerAheadOfColumnRef = playerMapPos > columnIndex - (mapWidth /2);
+			Debug.Log(playerMapPos + ":" + columnIndex + ":" +  playerAheadOfColumnRef);
 			if (playerAheadOfColumnRef)
 			{
 				GenerateColumn(columnIndex++);
