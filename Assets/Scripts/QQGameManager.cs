@@ -192,6 +192,7 @@ public class QQGameManager : MonoBehaviour {
         levelGenerator = new QQLevelGenerator(maps[currentLevel]);
         CurrentState = GameState.Game;
         score = 0;
+        StopAllCoroutines();
         StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
     }
 
