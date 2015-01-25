@@ -83,7 +83,7 @@ public class QQTile : MonoBehaviour {
 
     public void DropBlock()
     {
-        print("Drop Block");
+        //print("Drop Block");
         StartCoroutine(DropBlockRoutine());
     }
 

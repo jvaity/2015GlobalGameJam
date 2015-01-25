@@ -178,7 +178,7 @@ public class QQGameManager : MonoBehaviour {
             default:
                 break;
         }
-        Debug.Log("score: " + Score);
+        //Debug.Log("score: " + Score);
         
         StartCoroutine(DrillParticle(platformController.transform.position + Vector3.right * 2f, type));
     }
