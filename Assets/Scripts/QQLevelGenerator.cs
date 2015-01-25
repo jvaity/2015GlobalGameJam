@@ -41,7 +41,7 @@ public class QQLevelGenerator
 	public TileType CollideAtPosition(Vector3 pos, ref Vector2 previousPositionInGrid, TileType preiousTileType, bool inBlock = false, bool interact = true)
 	{
         
-        if (pos.x < 0 || pos.y < 0)
+        if (pos.x < 0 || pos.y < 0 || (int)pos.y >= mapHeight)
             return TileType.Empty;
 
         Vector2 positionFloored = new Vector2((int)pos.x, (int)pos.y);
