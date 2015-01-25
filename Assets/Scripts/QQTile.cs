@@ -7,6 +7,8 @@ public class QQTile : MonoBehaviour {
     Sprite[] blockSprites;//, CollectibleSprite;
     [SerializeField]
     Color firstColour, secondColour;
+    [SerializeField]
+    AudioClip blockAudio, coinAudio;
 
     private Vector2 coordinates;
     private TileType currentType;
@@ -103,5 +105,27 @@ public class QQTile : MonoBehaviour {
             transform.position -= (Vector3.up * currentSpeed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    public void playAudio(TileType type)
+    {
+        switch (type)
+        {
+            case TileType.Empty:
+                break;
+            case TileType.Block:
+                AudioSource.PlayClipAtPoint(blockAudio, QQGameManager.Instance.PlatformController.transform.position);
+                break;
+            case TileType.Death:
+                break;
+            case TileType.Coin:
+                AudioSource.PlayClipAtPoint(coinAudio, QQGameManager.Instance.PlatformController.transform.position);
+                break;
+            case TileType.Spawn:
+                break;
+            default:
+                break;
+        }
+        
     }
 }
