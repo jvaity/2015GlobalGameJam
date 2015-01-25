@@ -9,12 +9,15 @@ public class QQPlatformerController : MonoBehaviour
     public float acceleration    = 0.01f;
     public float maxXSpeed       = 1.0f;
     public float maxYSpeed       = 1.0f;
-    public float jumpSpeed       = 10.0f;
+    public float jumpSpeed       = 0.1f;
     public float gravity         = 0.001f;
 
     private bool grounded;
     private bool jumped;
+    private bool jumpButtonDown;
     private QQLevelGenerator levelGenerator;
+    private float jumpBoost;
+    private float jumpBoostMax = 0.05f;
 
     private Transform floorCheck;
     private float radius;
@@ -170,10 +173,31 @@ public class QQPlatformerController : MonoBehaviour
             (previousUpCheckType != TileType.Coin || previousUpCheckType != TileType.Block) && 
             Input.GetKeyDown(KeyCode.Space))
         {
+        	jumpButtonDown = true;
             jumped = true;
             grounded = false;
             velocity.y = jumpSpeed;
             //Debug.Log("Jump:" + velocity.y);
+        }
+        
+        if (jumpButtonDown)
+        {
+        	if (Input.GetKeyUp(KeyCode.Space) || grounded)
+        	{
+        		jumpBoost = 0;
+        		jumpButtonDown = false;
+        	}
+        	else
+        	{
+				jumpBoost = jumpBoostMax * Time.deltaTime * 5f;
+				if (jumpBoost > jumpBoostMax)
+				{
+					jumpButtonDown = false;
+					jumpBoost = 0;
+				}
+				else
+	        		velocity.y += jumpBoostMax * Time.deltaTime;
+        	}
         }
 
         if (velocity.y > 0 && (previousUpCheckType == TileType.Block || previousUpCheckType == TileType.Coin))

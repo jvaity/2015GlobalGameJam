@@ -36,7 +36,7 @@ public class QQTile : MonoBehaviour {
         this.currentType = type;
 
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-	Debug.Log(blockSprites.Length);
+	//Debug.Log(blockSprites.Length);
         switch (type)
         {
             case TileType.Empty:

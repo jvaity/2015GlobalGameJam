@@ -115,7 +115,7 @@ public class QQLevelGenerator
 			if (playerAheadOfColumnRef)
 			{
 				GenerateColumn(columnIndex++);
-				DeleteColumn(0);
+				//DeleteColumn(0);
 			}	
 			yield return null;//new WaitForSeconds(0.2f);
 		}

@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &453088
 Transform:
@@ -55,6 +55,8 @@ MonoBehaviour:
   blockSprites:
   - {fileID: 21300000, guid: 808c5b6e675c843d281f6bdda1a955b4, type: 3}
   - {fileID: 21300000, guid: e07f48838d0ea4157ad54a167a0d12ef, type: 3}
+  - {fileID: 21300000, guid: c48f021a496634669991d74ee17a70fb, type: 3}
+  - {fileID: 21300000, guid: a36127447b22e426fb8c711166dac15a, type: 3}
   firstColour: {r: .964705884, g: .411764711, b: .31764707, a: 1}
   secondColour: {r: 1, g: .729411781, b: .419607848, a: 1}
 --- !u!212 &21253088
