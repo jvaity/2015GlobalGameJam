@@ -177,7 +177,8 @@ public class QQLevelGenerator
     {
         foreach (QQTile tile in tileInstances)
         {
-            GameObject.Destroy(tile.gameObject);
+            if (tile != null)
+                GameObject.Destroy(tile.gameObject);
         }
     }
 }

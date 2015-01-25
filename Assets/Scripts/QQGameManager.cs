@@ -136,6 +136,9 @@ public class QQGameManager : MonoBehaviour {
         {
             CurrentState = GameState.Win;
             Debug.Log("You Win");
+
+            // debug
+            StartNextLevel();
         }
     }
 
@@ -166,12 +169,20 @@ public class QQGameManager : MonoBehaviour {
         CurrentState = GameState.Lose;
         Debug.Log("You Lose");
         // show game over screen
+
+        //debug
+        RestartLevel();
     }
 
     public void StartNextLevel()
     {
         ++currentLevel;
-        RestartLevel();        
+        if (currentLevel >= maps.Length)
+        {
+            Debug.Log("no more levels, go to credits");
+        }
+        else
+            RestartLevel();        
     }
 
     public void RestartLevel()
