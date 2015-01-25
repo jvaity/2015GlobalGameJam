@@ -95,6 +95,14 @@ public class QQGameManager : MonoBehaviour {
 
     public int Score
     {
+        set
+        {
+            if (score != value)
+            {
+                score = value;
+                guiManager.SetScore(score.ToString());
+            }
+        }
         get
         {
             return score;
@@ -117,6 +125,8 @@ public class QQGameManager : MonoBehaviour {
                 break;
             case GameState.Win:
             //Start next Level
+                if (Input.GetKeyDown(KeyCode.Space))
+                    StartNextLevel();
                 break;
             case GameState.Lose:
             if (Input.GetKeyDown(KeyCode.Space))
@@ -138,7 +148,7 @@ public class QQGameManager : MonoBehaviour {
             Debug.Log("You Win");
 
             // debug
-            StartNextLevel();
+            //StartNextLevel();
         }
     }
 
@@ -149,19 +159,19 @@ public class QQGameManager : MonoBehaviour {
             case TileType.Empty:
                 break;
             case TileType.Block:
-                score += 10;
+                Score += 10;
                 break;
             case TileType.Death:
                 break;
             case TileType.Coin:
-                score += 100;
+                Score += 100;
                 break;
             case TileType.Spawn:
                 break;
             default:
                 break;
         }
-        Debug.Log("score: " + score);
+        Debug.Log("score: " + Score);
     }
 
     public void GameOver()
@@ -180,6 +190,7 @@ public class QQGameManager : MonoBehaviour {
         if (currentLevel >= maps.Length)
         {
             Debug.Log("no more levels, go to credits");
+            CurrentState = GameState.Credits;
         }
         else
             RestartLevel();        
@@ -191,7 +202,8 @@ public class QQGameManager : MonoBehaviour {
             levelGenerator.Dispose();
         levelGenerator = new QQLevelGenerator(maps[currentLevel]);
         CurrentState = GameState.Game;
-        score = 0;
+        Score = 0;
+        StopAllCoroutines();
         StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
     }
 

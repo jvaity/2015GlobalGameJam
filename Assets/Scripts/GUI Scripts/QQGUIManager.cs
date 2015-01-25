@@ -7,6 +7,9 @@ public class QQGUIManager : MonoBehaviour
 	public GameObject startScreen, winScreen, loseScreen, creditsScreen;
 	private GameObject currentScreenShowing;
 
+    [SerializeField]
+    private GameObject scoreText;
+
 	void Start()
 	{
 		currentScreenShowing = startScreen;
@@ -15,15 +18,33 @@ public class QQGUIManager : MonoBehaviour
     public void ChangeGameState(QQGameManager.GameState state)
     {
     	GameObject newScreen = null;
-    
+
+        bool showScore = false;
+
     	switch (state)
     	{
-    		case QQGameManager.GameState.Menu: 		newScreen = startScreen; break;
-    		case QQGameManager.GameState.Win: 		newScreen = winScreen;	 break;
-    		case QQGameManager.GameState.Lose: 		newScreen = loseScreen;	 break;
-    		case QQGameManager.GameState.Credits:   newScreen = creditsScreen; break;
-    	}	
-    	
+    		case QQGameManager.GameState.Menu: 		
+                newScreen = startScreen;
+                break;
+            case QQGameManager.GameState.Win: 
+                newScreen = winScreen;
+                showScore = true; 
+                break;
+            case QQGameManager.GameState.Lose: 
+                newScreen = loseScreen; 
+                showScore = true; 
+                break;
+    		case QQGameManager.GameState.Credits:  
+                newScreen = creditsScreen;
+                break;
+            default:
+                showScore = true;
+                break;
+    	}
+
+        if (scoreText != null)
+            scoreText.gameObject.SetActive(showScore);
+
     	SwitchToScreen(newScreen);
     }
     
@@ -34,12 +55,12 @@ public class QQGUIManager : MonoBehaviour
     		currentScreenShowing.SetActive(false);
     		currentScreenShowing = null;
     	}
-    	
-    	if (newScreen != null)
-    	{
-    		newScreen.SetActive(true);
-    		currentScreenShowing = newScreen;
-    	}
+
+        if (newScreen != null)
+        {
+            newScreen.SetActive(true);
+            currentScreenShowing = newScreen;
+        }            
     }
     
 	public void PulseText(Text textObj, float pulseRate)
@@ -48,4 +69,9 @@ public class QQGUIManager : MonoBehaviour
 		newColor.a =  Mathf.Sin(Time.time * pulseRate);
 		textObj.color = newColor;
 	}
+
+    public void SetScore(string score)
+    {
+        scoreText.GetComponentInChildren<Text>().text = "Score: " + score;
+    }
 }
