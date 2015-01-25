@@ -47,6 +47,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a36127447b22e426fb8c711166dac15a, type: 3}
   firstColour: {r: .625, g: .174949288, b: .165441185, a: 1}
   secondColour: {r: 1, g: .307279676, b: 0, a: 1}
+  blockAudio: {fileID: 8300000, guid: ca681ca1364a7ff46a5ef5fe29343be8, type: 3}
+  coinAudio: {fileID: 8300000, guid: d43682e0582061642b32e42aca8c3b0b, type: 3}
 --- !u!212 &21253088
 SpriteRenderer:
   m_ObjectHideFlags: 1
