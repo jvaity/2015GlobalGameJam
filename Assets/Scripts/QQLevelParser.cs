@@ -3,8 +3,9 @@ using System.Collections;
 
 public class QQLevelParser {
 
-    public static TileType[,] ParseMap(Texture2D image)
+    public static TileType[,] ParseMap(Texture2D image, out int numberOfCollectibiles)
     {
+        numberOfCollectibiles = 0;
         TileType[,] tiles = new TileType[image.width, image.height];
         for (int y = 0; y < image.height; y++)
         {
@@ -22,6 +23,7 @@ public class QQLevelParser {
                 else if (pixel == Color.blue)
                 {
                     tiles[x, y] = TileType.Coin;
+                    numberOfCollectibiles++;
                 }
                 else if (pixel == Color.black)
                 {

@@ -68,11 +68,20 @@ public class QQGameManager : MonoBehaviour {
             return levelGenerator;
         }
     }
+
     public QQPlatformerController PlatformController
     {
         get
         {
             return platformController;
+        }
+    }
+
+    public int NumberOfCollectibilesInLevel
+    {
+        set
+        {
+            numberOfCollectiblesInLevel = value;
         }
     }
 
@@ -86,6 +95,7 @@ public class QQGameManager : MonoBehaviour {
             case GameState.Menu:
                 break;
             case GameState.Game:
+                platformController.Move();
                 break;
             case GameState.Win:
                 break;
@@ -102,12 +112,16 @@ public class QQGameManager : MonoBehaviour {
     {
         numberOfCollectiblesInLevel--;
         if (numberOfCollectiblesInLevel < 1)
+        {
             currentState = GameState.Win;
+            Debug.Log("You Win");
+        }
     }
 
     public void GameOver()
     {
         currentState = GameState.Lose;
+        Debug.Log("You Lose");
         // show game over screen
     }
 

@@ -72,10 +72,10 @@ public class QQPlatformerController : MonoBehaviour
         //}
 	}
 
-    void Update()
-    {
-        Move();
-    }
+    //void Update()
+    //{
+    //    Move();
+    //}
 
     public void Spawn(Vector3 position)
     {
@@ -83,7 +83,7 @@ public class QQPlatformerController : MonoBehaviour
         transform.position = position;
     }
 
-    private void Move()
+    public void Move()
     {
         CheckIfGrounded();
         CheckCollisionRight();
