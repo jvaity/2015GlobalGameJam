@@ -20,6 +20,8 @@ public class QQGameManager : MonoBehaviour {
     private Texture2D[] maps;
     [SerializeField]
     QQPlatformerController platformController;
+    [SerializeField]
+    ParticleSystem	particle;
 
     #endregion
 
@@ -172,7 +174,23 @@ public class QQGameManager : MonoBehaviour {
                 break;
         }
         Debug.Log("score: " + Score);
+        
+        StartCoroutine(DrillParticle(platformController.transform.position + Vector3.right * 2f, type));
     }
+
+	private IEnumerator DrillParticle(Vector3 pos, TileType type)
+	{
+		GameObject newParticle = GameObject.Instantiate(particle.gameObject) as GameObject;
+		newParticle.transform.position = pos;
+		ParticleSystem system = newParticle.GetComponent<ParticleSystem>();
+		if (type == TileType.Coin)
+			system.startColor = Color.cyan;
+		else
+			system.startColor = new Color32(148, 48, 0, 255);
+		
+		yield return new WaitForSeconds(system.duration);
+		GameObject.Destroy(newParticle);
+	}
 
     public void GameOver()
     {
