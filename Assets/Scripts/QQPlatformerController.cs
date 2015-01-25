@@ -88,7 +88,6 @@ public class QQPlatformerController : MonoBehaviour
         jumpBoost = 0;
         grounded = false;
         jumped = false;
-        levelGenerator = QQGameManager.Instance.LevelGenerator;
     }
 
     public void Move()
