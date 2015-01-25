@@ -135,6 +135,11 @@ public class QQGameManager : MonoBehaviour {
             	RestartLevel();
                 break;
             case GameState.Credits:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    currentLevel = 0;
+                    CurrentState = GameState.Menu;
+                }
                 break;
             default:
                 break;
