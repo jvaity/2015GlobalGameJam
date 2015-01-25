@@ -171,7 +171,7 @@ public class QQGameManager : MonoBehaviour {
         // show game over screen
 
         //debug
-        RestartLevel();
+        //RestartLevel();
     }
 
     public void StartNextLevel()
@@ -208,6 +208,6 @@ public class QQGameManager : MonoBehaviour {
 
 		guiManager = GetComponent<QQGUIManager>();
         // Use this to Init any classes
-        RestartLevel();
+        //RestartLevel();
     }
 }

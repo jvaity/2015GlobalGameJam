@@ -7,6 +7,11 @@ public class QQGUIManager : MonoBehaviour
 	public GameObject startScreen, winScreen, loseScreen, creditsScreen;
 	private GameObject currentScreenShowing;
 
+	void Start()
+	{
+		currentScreenShowing = startScreen;
+	}
+
     public void ChangeGameState(QQGameManager.GameState state)
     {
     	GameObject newScreen = null;
