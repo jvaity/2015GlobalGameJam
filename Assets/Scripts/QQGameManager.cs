@@ -204,7 +204,7 @@ public class QQGameManager : MonoBehaviour {
         Application.targetFrameRate = 60;
 
         // Create Classes
-        levelGenerator = new QQLevelGenerator(maps[currentLevel]);
+        //levelGenerator = new QQLevelGenerator(maps[currentLevel]);
 
 		guiManager = GetComponent<QQGUIManager>();
         // Use this to Init any classes
