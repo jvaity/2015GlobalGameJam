@@ -45,8 +45,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e07f48838d0ea4157ad54a167a0d12ef, type: 3}
   - {fileID: 21300000, guid: c48f021a496634669991d74ee17a70fb, type: 3}
   - {fileID: 21300000, guid: a36127447b22e426fb8c711166dac15a, type: 3}
-  firstColour: {r: .964705884, g: .411764711, b: .31764707, a: 1}
-  secondColour: {r: 1, g: .729411781, b: .419607848, a: 1}
+  firstColour: {r: .625, g: .174949288, b: .165441185, a: 1}
+  secondColour: {r: 1, g: .307279676, b: 0, a: 1}
 --- !u!212 &21253088
 SpriteRenderer:
   m_ObjectHideFlags: 1
