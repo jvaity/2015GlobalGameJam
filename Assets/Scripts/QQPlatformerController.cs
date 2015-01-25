@@ -11,6 +11,7 @@ public class QQPlatformerController : MonoBehaviour
     public float maxYSpeed       = 1.0f;
     public float jumpSpeed       = 0.1f;
     public float gravity         = 0.001f;
+    public float maxDrillSpeed   = 1.5f;
 
     private bool grounded;
     private bool jumped;
@@ -149,7 +150,6 @@ public class QQPlatformerController : MonoBehaviour
 
     private void ApplyAcceleration()
     {
-        if (velocity.x < maxXSpeed)
             velocity.x += acceleration * Time.deltaTime;
     }
 
@@ -208,8 +208,13 @@ public class QQPlatformerController : MonoBehaviour
     {
         Vector3 vel = velocity;
 
-        if (vel.x > maxXSpeed)
-            vel.x = maxXSpeed;
+        if (previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin)
+        {
+            if (vel.x > maxDrillSpeed)
+                vel.x = maxDrillSpeed;
+        }
+        else if (vel.x > maxXSpeed)
+            vel.x = Mathf.Lerp(vel.x, maxXSpeed, 0.1f);
 
         if (Mathf.Abs(vel.y) > maxYSpeed)
             vel.y = (vel.y >= 0) ? maxYSpeed : -maxYSpeed;

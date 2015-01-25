@@ -39,6 +39,8 @@ public class QQGameManager : MonoBehaviour {
     private int currentLevel = 0;
     private int numberOfCollectiblesInLevel;
 
+    private int score;
+
     #region Accessors
 
     public GameState CurrentState
@@ -85,6 +87,14 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
+
     #endregion
 
     private void Update()
@@ -118,6 +128,28 @@ public class QQGameManager : MonoBehaviour {
         }
     }
 
+    public void blockDrilled(TileType type)
+    {
+        switch (type)
+        {
+            case TileType.Empty:
+                break;
+            case TileType.Block:
+                score += 10;
+                break;
+            case TileType.Death:
+                break;
+            case TileType.Coin:
+                score += 100;
+                break;
+            case TileType.Spawn:
+                break;
+            default:
+                break;
+        }
+        Debug.Log("score: " + score);
+    }
+
     public void GameOver()
     {
         currentState = GameState.Lose;
@@ -137,6 +169,7 @@ public class QQGameManager : MonoBehaviour {
             levelGenerator.Dispose();
         levelGenerator = new QQLevelGenerator(maps[currentLevel]);
         currentState = GameState.Game;
+        score = 0;
         StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
     }
 

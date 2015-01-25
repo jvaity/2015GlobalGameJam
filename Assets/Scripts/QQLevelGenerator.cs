@@ -25,9 +25,12 @@ public class QQLevelGenerator
 	public QQLevelGenerator (Texture2D texMap) 
 	{
         int collectibles = 0;
+        Vector2 spawnPoint;
+
 		textureMap = texMap;
-		tilesArray = QQLevelParser.ParseMap (texMap, out collectibles);
+		tilesArray = QQLevelParser.ParseMap (texMap, out collectibles, out spawnPoint);
         QQGameManager.Instance.NumberOfCollectibilesInLevel = collectibles;
+        QQGameManager.Instance.PlatformController.Spawn(spawnPoint);
 		mapWidth = textureMap.width;
 		mapHeight = textureMap.height;
 		tileInstances = new List<QQTile>();
@@ -68,6 +71,7 @@ public class QQLevelGenerator
                     QQTile tileToDelete = tileInstances[index];
                     if (tileToDelete != null)
                     {
+                        QQGameManager.Instance.blockDrilled(type);
                         GameObject.Destroy(tileToDelete.gameObject);
                     }
                 }
@@ -88,6 +92,7 @@ public class QQLevelGenerator
                     QQTile tileToDelete = tileInstances[index];
                     if (tileToDelete != null)
                     {
+                        QQGameManager.Instance.blockDrilled(type);
                         GameObject.Destroy(tileToDelete.gameObject);
                     }
                 }

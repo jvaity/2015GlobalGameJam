@@ -3,9 +3,10 @@ using System.Collections;
 
 public class QQLevelParser {
 
-    public static TileType[,] ParseMap(Texture2D image, out int numberOfCollectibiles)
+    public static TileType[,] ParseMap(Texture2D image, out int numberOfCollectibiles, out Vector2 spawnPoint)
     {
         numberOfCollectibiles = 0;
+        spawnPoint = new Vector2(0.5f, image.height);
         TileType[,] tiles = new TileType[image.width, image.height];
         for (int y = 0; y < image.height; y++)
         {
@@ -28,6 +29,7 @@ public class QQLevelParser {
                 else if (pixel == Color.black)
                 {
                     tiles[x, y] = TileType.Spawn;
+                    spawnPoint = new Vector2(x + 0.5f, y + 0.5f);
                 }
                 else
                     tiles[x, y] = TileType.Empty;
