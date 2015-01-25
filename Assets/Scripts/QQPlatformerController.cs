@@ -69,7 +69,7 @@ public class QQPlatformerController : MonoBehaviour
         //}
 	}
 
-    void FixedUpdate()
+    void Update()
     {
         Move();
     }
@@ -105,7 +105,6 @@ public class QQPlatformerController : MonoBehaviour
         TileType tileTypeBelow = previousGroundCheckType = levelGenerator.CollideAtPosition(MinYPos, ref previousGroundCheckPos, previousGroundCheckType);
 
         currentTileType = tileTypeBelow;
-
         //Debug.Log("<b><color=red>Tile type below: " + tileTypeBelow + "</color></b>");
 
         switch (tileTypeBelow)
@@ -120,9 +119,9 @@ public class QQPlatformerController : MonoBehaviour
                     //if ((Mathf.Abs(Mathf.Ceil(MinYPos.y) - MinYPos.y) <= ledgeTolerance))
                     //{
                         grounded = true;
-                        if (transform.position.y < previousGroundCheckPos.y + 1.4f)
+                        if (transform.position.y < previousGroundCheckPos.y + 1.5f)
                         {
-                            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, previousGroundCheckPos.y + 1.4f, transform.position.z), 0.2f);
+                            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, previousGroundCheckPos.y + 1.5f, transform.position.z), 0.2f);
                         }
                     //}
                 //}
@@ -137,6 +136,7 @@ public class QQPlatformerController : MonoBehaviour
     private void CheckCollisionUp()
     {
         previousUpCheckType = levelGenerator.CollideAtPosition(MaxYPos, ref previousUpCheckPos, previousUpCheckType, false, false);
+        
     }
 
     private void CheckCollisionRight()
@@ -152,7 +152,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!grounded && previousForwardCheckType != TileType.Block && previousForwardCheckType != TileType.Coin)
+        if (!grounded)
         {
             velocity.y -= gravity * Time.deltaTime;
         }
@@ -201,8 +201,12 @@ public class QQPlatformerController : MonoBehaviour
         if (previousForwardCheckType == TileType.Block || previousForwardCheckType == TileType.Coin)
         {
             Vector3 snapPos = transform.position;
-            snapPos.y = previousForwardCheckPos.y + 0.5f;
-            transform.position = Vector3.Lerp(transform.position, snapPos, 0.1f);
+            if (snapPos.y < previousForwardCheckPos.y + 0.5f)
+            {
+                snapPos.y = previousForwardCheckPos.y + 0.5f;
+                transform.position = Vector3.Lerp(transform.position, snapPos, 0.1f);
+                velocity.y = velocity.y < 0 ? 0 : velocity.y;
+            }
         }
     }
 }
