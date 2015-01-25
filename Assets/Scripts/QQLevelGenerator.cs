@@ -71,6 +71,7 @@ public class QQLevelGenerator
                     QQTile tileToDelete = tileInstances[index];
                     if (tileToDelete != null)
                     {
+                        tileToDelete.playAudio(type);
                         QQGameManager.Instance.blockDrilled(type);
                         GameObject.Destroy(tileToDelete.gameObject);
                     }
@@ -92,6 +93,7 @@ public class QQLevelGenerator
                     QQTile tileToDelete = tileInstances[index];
                     if (tileToDelete != null)
                     {
+                        tileToDelete.playAudio(type);
                         QQGameManager.Instance.blockDrilled(type);
                         GameObject.Destroy(tileToDelete.gameObject);
                     }

@@ -73,6 +73,7 @@ MonoBehaviour:
   maxYSpeed: .100000001
   jumpSpeed: .0500000007
   gravity: .100000001
+  maxDrillSpeed: .100000001
   currentTileType: 0
 --- !u!212 &21285174
 SpriteRenderer:
