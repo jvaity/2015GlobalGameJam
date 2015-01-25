@@ -1313,7 +1313,7 @@ MonoBehaviour:
   maxYSpeed: .100000001
   jumpSpeed: .0500000007
   gravity: .100000001
-  maxDrillSpeed: 1.5
+  maxDrillSpeed: .100000001
   currentTileType: 0
 --- !u!212 &384227689
 SpriteRenderer:
@@ -1341,7 +1341,7 @@ SpriteRenderer:
 --- !u!114 &384227690
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11417904, guid: 659ae0772c8d2b44287e81da3759b30d,
+  m_PrefabParentObject: {fileID: 11426400, guid: 659ae0772c8d2b44287e81da3759b30d,
     type: 2}
   m_PrefabInternal: {fileID: 1445344761}
   m_GameObject: {fileID: 384227686}
@@ -2091,6 +2091,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: b19d7d91487adcf44a94a46488b7cea1, type: 3}
   - {fileID: 2800000, guid: 3dd54d1cd7d9b3549a6432a2c6daf6b5, type: 3}
   platformController: {fileID: 384227688}
+  particle: {fileID: 19813660, guid: 2c14f1e04f47844b0a4464d83d9f6a0b, type: 2}
   currentState: 0
 --- !u!114 &618258070
 MonoBehaviour:
@@ -6882,6 +6883,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a36127447b22e426fb8c711166dac15a, type: 3}
   firstColour: {r: .625, g: .174949288, b: .165441185, a: 1}
   secondColour: {r: 1, g: .307279676, b: 0, a: 1}
+  blockAudio: {fileID: 8300000, guid: ca681ca1364a7ff46a5ef5fe29343be8, type: 3}
+  coinAudio: {fileID: 8300000, guid: d43682e0582061642b32e42aca8c3b0b, type: 3}
 --- !u!212 &2045683577
 SpriteRenderer:
   m_ObjectHideFlags: 0
