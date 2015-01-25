@@ -82,6 +82,13 @@ public class QQPlatformerController : MonoBehaviour
     {
         velocity = Vector3.zero;
         transform.position = position;
+        previousForwardCheckPos = previousGroundCheckPos = previousUpCheckPos = new Vector3 (-1,-1,-1);
+        previousUpCheckType = previousGroundCheckType = previousForwardCheckType = TileType.Empty;
+        jumpButtonDown = false;
+        jumpBoost = 0;
+        grounded = false;
+        jumped = false;
+        levelGenerator = QQGameManager.Instance.LevelGenerator;
     }
 
     public void Move()
