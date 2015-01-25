@@ -41,6 +41,8 @@ public class QQGameManager : MonoBehaviour {
 
     private int score;
 
+	private QQGUIManager guiManager;
+	
     #region Accessors
 
     public GameState CurrentState
@@ -51,7 +53,11 @@ public class QQGameManager : MonoBehaviour {
         }
         set
         {
-            currentState = value;
+        	if (currentState != value)
+        	{
+            	currentState = value;          	
+            	guiManager.ChangeGameState(currentState);
+            }
         }
     }
 
@@ -103,13 +109,18 @@ public class QQGameManager : MonoBehaviour {
         switch (currentState)
         {
             case GameState.Menu:
-                break;
-            case GameState.Game:
+			if (Input.GetKeyDown(KeyCode.Space))
+				RestartLevel();
+			break;
+			case GameState.Game:
                 platformController.Move();
                 break;
             case GameState.Win:
+            //Start next Level
                 break;
             case GameState.Lose:
+            if (Input.GetKeyDown(KeyCode.Space))
+            	RestartLevel();
                 break;
             case GameState.Credits:
                 break;
@@ -123,7 +134,7 @@ public class QQGameManager : MonoBehaviour {
         numberOfCollectiblesInLevel--;
         if (numberOfCollectiblesInLevel < 1)
         {
-            currentState = GameState.Win;
+            CurrentState = GameState.Win;
             Debug.Log("You Win");
 
             // debug
@@ -155,12 +166,12 @@ public class QQGameManager : MonoBehaviour {
 
     public void GameOver()
     {
-        currentState = GameState.Lose;
+        CurrentState = GameState.Lose;
         Debug.Log("You Lose");
         // show game over screen
 
         //debug
-        RestartLevel();
+        //RestartLevel();
     }
 
     public void StartNextLevel()
@@ -179,7 +190,7 @@ public class QQGameManager : MonoBehaviour {
         if (levelGenerator != null)
             levelGenerator.Dispose();
         levelGenerator = new QQLevelGenerator(maps[currentLevel]);
-        currentState = GameState.Game;
+        CurrentState = GameState.Game;
         score = 0;
         StartCoroutine(levelGenerator.ColumnGeneratorRoutine(levelGenerator.MapWidth));
     }
@@ -193,9 +204,10 @@ public class QQGameManager : MonoBehaviour {
         Application.targetFrameRate = 60;
 
         // Create Classes
-        levelGenerator = new QQLevelGenerator(maps[currentLevel]);
+        //levelGenerator = new QQLevelGenerator(maps[currentLevel]);
 
+		guiManager = GetComponent<QQGUIManager>();
         // Use this to Init any classes
-        RestartLevel();
+        //RestartLevel();
     }
 }

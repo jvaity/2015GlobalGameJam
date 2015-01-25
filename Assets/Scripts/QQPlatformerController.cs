@@ -16,7 +16,7 @@ public class QQPlatformerController : MonoBehaviour
     private bool grounded;
     private bool jumped;
     private bool jumpButtonDown;
-    private QQLevelGenerator levelGenerator;
+    //private QQLevelGenerator levelGenerator;
     private float jumpBoost;
     private float jumpBoostMax = 0.05f;
 
@@ -60,7 +60,7 @@ public class QQPlatformerController : MonoBehaviour
 
 	void Start () 
     {
-        levelGenerator = QQGameManager.Instance.LevelGenerator;
+        //levelGenerator = QQGameManager.Instance.LevelGenerator;
         floorCheck = transform.Find("BottomPos");
 
         if (floorCheck != null)
@@ -113,7 +113,7 @@ public class QQPlatformerController : MonoBehaviour
 
     private void CheckIfGrounded()
     {
-        TileType tileTypeBelow = previousGroundCheckType = levelGenerator.CollideAtPosition(MinYPos, ref previousGroundCheckPos, previousGroundCheckType);
+        TileType tileTypeBelow = previousGroundCheckType = QQGameManager.Instance.LevelGenerator.CollideAtPosition(MinYPos, ref previousGroundCheckPos, previousGroundCheckType);
 
         currentTileType = tileTypeBelow;
         //Debug.Log("<b><color=red>Tile type below: " + tileTypeBelow + "</color></b>");
@@ -146,13 +146,13 @@ public class QQPlatformerController : MonoBehaviour
 
     private void CheckCollisionUp()
     {
-        previousUpCheckType = levelGenerator.CollideAtPosition(MaxYPos, ref previousUpCheckPos, previousUpCheckType, false, false);
+		previousUpCheckType = QQGameManager.Instance.LevelGenerator.CollideAtPosition(MaxYPos, ref previousUpCheckPos, previousUpCheckType, false, false);
         
     }
 
     private void CheckCollisionRight()
     {
-        previousForwardCheckType = levelGenerator.CollideAtPosition(MaxXPos, ref previousForwardCheckPos, previousForwardCheckType, true);
+		previousForwardCheckType = QQGameManager.Instance.LevelGenerator.CollideAtPosition(MaxXPos, ref previousForwardCheckPos, previousForwardCheckType, true);
     }
 
     private void ApplyAcceleration()

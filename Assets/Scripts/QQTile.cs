@@ -48,7 +48,7 @@ public class QQTile : MonoBehaviour {
                 SetSprite(renderer, Color.clear);
                 break;
             case TileType.Coin:
-				SetSprite(renderer, Color.yellow, blockSprites[Random.Range(0, blockSprites.Length)]);
+				SetSprite(renderer, Color.cyan, blockSprites[Random.Range(0, blockSprites.Length)]);
                 break;
             case TileType.Spawn:
                 SetSprite(renderer, Color.clear);
