@@ -56,24 +56,33 @@ public class QQLevelGenerator
         if (!interact)
             return type;
 
+        int gridIndex = 0;
+        int deleteOffset = 0;
+        int index = 0;
+
+        QQTile tileToDelete = null;
+
         switch (type)
         {
             case TileType.Empty:
                 break;
             case TileType.Block:
                 tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
-                if (inBlock)
-                {
-                    int gridIndex = ((int)positionFloored.x * mapHeight) + (int)positionFloored.y;
-                    int deleteOffset = deleteCounter;
-                    int index = gridIndex - deleteCounter;
+                
+                gridIndex = ((int)positionFloored.x * mapHeight) + (int)positionFloored.y;
+                deleteOffset = deleteCounter;
+                index = gridIndex - deleteCounter;
 
-                    QQTile tileToDelete = tileInstances[index];
-                    if (tileToDelete != null)
+                tileToDelete = tileInstances[index];
+                if (tileToDelete != null)
+                {
+                    if (inBlock)
                     {
                         QQGameManager.Instance.blockDrilled(type);
                         GameObject.Destroy(tileToDelete.gameObject);
                     }
+                    else
+                        tileToDelete.DropBlock();
                 }
                 break;
             case TileType.Death:
@@ -85,11 +94,11 @@ public class QQLevelGenerator
                     QQGameManager.Instance.CollectiblePickedUp();
                     tilesArray[(int)positionInGrid.x, (int)positionInGrid.y] = TileType.Empty;
 
-                    int gridIndex = ((int)positionFloored.x * mapHeight) + (int)positionFloored.y;
-                    int deleteOffset = deleteCounter;
-                    int index = gridIndex - deleteCounter;
+                    gridIndex = ((int)positionFloored.x * mapHeight) + (int)positionFloored.y;
+                    deleteOffset = deleteCounter;
+                    index = gridIndex - deleteCounter;
 
-                    QQTile tileToDelete = tileInstances[index];
+                    tileToDelete = tileInstances[index];
                     if (tileToDelete != null)
                     {
                         QQGameManager.Instance.blockDrilled(type);

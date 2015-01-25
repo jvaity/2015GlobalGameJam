@@ -11,6 +11,10 @@ public class QQTile : MonoBehaviour {
     private Vector2 coordinates;
     private TileType currentType;
 
+    private float dropAcceleration = 0.1f;
+    private float maxDropSpeed = 2.0f;
+    private float currentSpeed = 0.0f;
+
     public TileType CurrentType
     {
         get
@@ -72,6 +76,32 @@ public class QQTile : MonoBehaviour {
             renderer.enabled = true;
             renderer.sprite = sprite;
             renderer.color = colour;
+        }
+    }
+
+    public void DropBlock()
+    {
+        print("Drop Block");
+        StartCoroutine(DropBlockRoutine());
+    }
+
+    private IEnumerator DropBlockRoutine()
+    {
+        //Change this to edit how long after the player hits it that it drops
+        yield return new WaitForSeconds(0.5f);
+
+        currentSpeed = 0.0f;
+
+        while (transform.position.y > -2.0f)
+        {
+            if (currentSpeed < maxDropSpeed)
+                currentSpeed += dropAcceleration;
+
+            if (currentSpeed > maxDropSpeed)
+                currentSpeed = maxDropSpeed;
+
+            transform.position -= (Vector3.up * currentSpeed * Time.deltaTime);
+            yield return null;
         }
     }
 }
